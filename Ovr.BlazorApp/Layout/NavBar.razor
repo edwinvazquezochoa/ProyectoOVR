@@ -1,0 +1,71 @@
+﻿@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@inject IMenuService MenuService
+
+<div class="top-row ps-3 navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+@*         <a class="navbar-brand" href="/Home">Opticas Vista Real</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button> *@
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                @foreach (var menu in Menus)
+                {
+                    @if (menu.SubMenus.Any())
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="menuDropdown-@menu.MenuId" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @menu.MenuName
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="menuDropdown-@menu.MenuId">
+                                @foreach (var subMenu in menu.SubMenus)
+                                {
+                                    @if (!string.IsNullOrEmpty(subMenu.Controller) && !string.IsNullOrEmpty(subMenu.Action))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" href="@($"/{subMenu.Controller}")">
+                                                @subMenu.MenuName
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <span class="dropdown-item disabled">@subMenu.MenuName</span>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            @if (!string.IsNullOrEmpty(menu.Controller) && !string.IsNullOrEmpty(menu.Action))
+                            {
+                                <NavLink class="nav-link" href="@($"/{menu.Controller}")">
+                                    @menu.MenuName
+                                </NavLink>
+                            }
+                            else
+                            {
+                                <span class="nav-link disabled">@menu.MenuName</span>
+                            }
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Menu> Menus = new();
+    private HashSet<int> ExpandedMenus = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Menus = await MenuService.GetMenusAsync();
+    }
+}

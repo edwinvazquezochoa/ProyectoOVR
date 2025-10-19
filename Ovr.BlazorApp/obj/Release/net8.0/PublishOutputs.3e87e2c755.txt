@@ -1,0 +1,3 @@
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\appsettings.json
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\emcc-props.json
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\web.config

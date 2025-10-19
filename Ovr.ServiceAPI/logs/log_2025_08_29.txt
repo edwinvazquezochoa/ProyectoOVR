@@ -1,0 +1,18 @@
+Registro ID: 68a11fc1-b7e8-4925-b5b5-0a3ad9379558
+Fecha y Hora: 2025-08-29 15:40:57
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 02767d6e-115f-4cc7-92a5-212c75d196b7
+Fecha y Hora: 2025-08-29 15:41:02
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: c8405f2c-8f04-4f5e-b385-a29d680ad857
+Fecha y Hora: 2025-08-29 15:41:02
+Contexto: SalesNoteController.GetById
+Mensaje: Nota de venta con ID 11 obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------

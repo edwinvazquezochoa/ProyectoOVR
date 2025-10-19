@@ -1,0 +1,8 @@
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\Ovr.Domain.dll
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\Ovr.Domain.deps.json
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\Ovr.Domain.pdb
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\Newtonsoft.Json.dll
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\System.IO.Pipelines.dll
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\System.Text.Encodings.Web.dll
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\System.Text.Json.dll
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\publish\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll

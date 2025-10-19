@@ -1,0 +1,28 @@
+﻿@using System.Globalization
+
+<InputText value="@FormattedValue"
+           class="@CssClass"
+           disabled="@IsDisabled"
+           readonly="@IsReadOnly" />
+
+@code {
+    [Parameter]
+    public DateTime Value { get; set; }
+
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = true;
+
+    [Parameter]
+    public string Format { get; set; } = "dd/MM/yyyy HH:mm";
+
+    [Parameter]
+    public string CssClass { get; set; } = "form-control";
+
+    /// <summary>
+    /// Solo para mostrar; no se recomienda usar binding de entrada.
+    /// </summary>
+    public string FormattedValue => Value.ToString(Format, CultureInfo.InvariantCulture);
+}

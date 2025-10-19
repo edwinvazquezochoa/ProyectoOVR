@@ -1,0 +1,135 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = Ovr.BlazorApp
+build_property.RootNamespace = Ovr.BlazorApp
+build_property.ProjectDir = C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.BlazorApp\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.BlazorApp
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Components/InputDateTime.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbnB1dERhdGVUaW1lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Components/InputPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbnB1dFBhc3N3b3JkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Components/InputSearchDropdown.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbnB1dFNlYXJjaERyb3Bkb3duLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Components/LabelDateTime.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYWJlbERhdGVUaW1lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Layout/LoginLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XExvZ2luTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Layout/NavBar.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdkJhci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Catalogs/Frames.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0YWxvZ3NcRnJhbWVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Catalogs/Laboratories.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0YWxvZ3NcTGFib3JhdG9yaWVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Catalogs/Lenses.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0YWxvZ3NcTGVuc2VzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Catalogs/People.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0YWxvZ3NcUGVvcGxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Catalogs/SalesStatus.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0YWxvZ3NcU2FsZXNTdGF0dXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Component.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Modals/ModRole.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW9kYWxzXE1vZFJvbGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Reports/ReportSales.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xSZXBvcnRTYWxlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Sales/Sale.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNcU2FsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Sales/SaleDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNcU2FsZURldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Settings/SettingBranches.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcU2V0dGluZ0JyYW5jaGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Settings/SettingPermissionsRole.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcU2V0dGluZ1Blcm1pc3Npb25zUm9sZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Settings/SettingPermissionsUser.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcU2V0dGluZ1Blcm1pc3Npb25zVXNlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Settings/SettingRoles.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcU2V0dGluZ1JvbGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Pages/Settings/SettingUsers.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ3NcU2V0dGluZ1VzZXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Sedicos/Clientes/OVR/Code/OvrSolution/Ovr.BlazorApp/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-r5cdgl0rkw

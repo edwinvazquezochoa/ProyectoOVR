@@ -1,0 +1,8 @@
+C:\Deploy\OVRFrontend\Ovr.Domain.dll
+C:\Deploy\OVRFrontend\Ovr.Domain.deps.json
+C:\Deploy\OVRFrontend\Ovr.Domain.pdb
+C:\Deploy\OVRFrontend\Newtonsoft.Json.dll
+C:\Deploy\OVRFrontend\System.IO.Pipelines.dll
+C:\Deploy\OVRFrontend\System.Text.Encodings.Web.dll
+C:\Deploy\OVRFrontend\System.Text.Json.dll
+C:\Deploy\OVRFrontend\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll

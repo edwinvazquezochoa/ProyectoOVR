@@ -1,0 +1,834 @@
+﻿@page "/Sales/SaleDetails/{id:long}"
+@* ---------------------------------------------------------- *@
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Ovr.BlazorApp.Components
+@using Ovr.BlazorApp.Extensions
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.BlazorApp.Services.Interfaces
+@using Ovr.Domain.DTOs
+@using Ovr.Domain.Models
+@using Ovr.Domain.Responses
+@using ClosedXML.Excel
+@* ---------------------------------------------------------- *@
+@inject SweetAlertService SweetAlertService
+@inject IPersonsServices PersonService
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@inject ISalesNoteService SalesNoteService
+@* ---------------------------------------------------------- *@
+
+<div class="page-wrapper">
+    <div class="d-flex justify-content-between align-items-center sticky-top bg-light p-3 border-bottom" style="z-index: 1020;">
+        <h3 class="mb-0">Nota de Venta</h3>
+        <div class="d-flex gap-2">
+            <button type="submit" form="formNotaVenta" class="btn btn-primary px-4">
+                Guardar Nota
+            </button>
+            <button type="button" class="btn btn-secondary px-4" @onclick="RegresarALista">
+                Regresar
+            </button>
+        </div>
+    </div>
+
+    <div class="detalle-scroll">
+        <EditForm Model="saleNote" OnValidSubmit="HandleValidSubmit" id="formNotaVenta">
+            <DataAnnotationsValidator />
+            <div class="space-y-4">
+
+                <!-- Datos del paciente -->
+                <div class="card p-3 mb-1">
+                    <div class="d-flex">
+
+                        <!-- Columna izquierda (80%) -->
+                        <div class="flex-grow-1 me-3">
+                            <div class="row">
+                                <!-- Cliente -->
+                                <label class="form-label">Cliente</label>
+                                <!-- Fragmento corregido de InputSelect -->
+                                <InputSearchDropdown TItem="Person"
+                                                     TItemKey="long"
+                                                     Items="@personList"
+                                                     ItemTextSelector="p => p.FullName"
+                                                     ItemValueSelector="p => p.PersonId"
+                                                     @bind-SelectedValue="SelectedPersonId" />
+                            </div>
+                            <div class="row">
+                                <div class="accordion mb-4" id="accordionContactoDireccion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingContactoDireccion">
+                                            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContactoDireccion" aria-expanded="false" aria-controls="collapseContactoDireccion">
+                                                Datos de Contacto y Dirección
+                                            </button>
+                                        </h2>
+                                        <div id="collapseContactoDireccion" class="accordion-collapse collapse" aria-labelledby="headingContactoDireccion" data-bs-parent="#accordionContactoDireccion">
+                                            <div class="accordion-body">
+                                                <!-- Teléfono + Correo -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Teléfono</label>
+                                                        <InputText @bind-Value="saleNote.ClienteTelefono" class="form-control" placeholder="Teléfono" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Correo</label>
+                                                        <InputText @bind-Value="saleNote.ClienteEmail" class="form-control" placeholder="Correo electrónico" />
+                                                    </div>
+                                                </div>
+                                                <!-- Dirección -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Calle & Número</label>
+                                                        <InputText @bind-Value="saleNote.AddressStreetNumber" class="form-control" placeholder="Calle & Número" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Colonia</label>
+                                                        <InputText @bind-Value="saleNote.AddressNeighborhood" class="form-control" placeholder="Colonia" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Población / Ciudad</label>
+                                                        <InputText @bind-Value="saleNote.AddressCity" class="form-control" placeholder="Ciudad" />
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Municipio / Estado</label>
+                                                        <InputText @bind-Value="saleNote.AddressState" class="form-control" placeholder="Estado" />
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Código Postal</label>
+                                                        <InputText @bind-Value="saleNote.AddressPostalCode" class="form-control" placeholder="Código Postal" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Columna derecha (20%) -->
+                        <div style="width: 20%;" class="d-flex flex-column justify-content-start align-items-center border-start ps-3">
+                            <!-- NOTA DE VENTA -->
+                            <div class="mb-3 text-center">
+                                <label class="fw-bold text-uppercase fs-6">NOTA DE VENTA</label>
+                            </div>
+                            <!-- Folio -->
+                            <div class="mb-3 text-center">
+                                <span class="display-6 fw-bold">@saleNoteCurrent.OrderNumber</span>
+                            </div>
+                            <!-- Fecha / Hora -->
+                            <div class="mb-3 text-center w-100">
+                                <label class="form-label">Fecha / Hora</label>
+                                <LabelDateTime Value="saleNoteCurrent.SaleDate" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Productos y servicios -->
+                <div class="accordion mb-1" id="accordionProductos">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingProductos">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProductos" aria-expanded="false" aria-controls="collapseProductos">
+                                Productos y/o Servicios
+                            </button>
+                        </h2>
+                        <div id="collapseProductos" class="accordion-collapse collapse" aria-labelledby="headingProductos" data-bs-parent="#accordionProductos">
+                            <div class="accordion-body">
+                                <InputTextArea @bind-Value="saleNoteCurrent.Products_Services" class="form-control" rows="2" placeholder="Descripción de productos y/o servicios" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Adaptación lente -->
+                <div class="accordion mb-1" id="accordionLenteAnteojo">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingLenteAnteojo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLenteAnteojo" aria-expanded="false" aria-controls="collapseLenteAnteojo">
+                                Adaptación Lente (Anteojo)
+                            </button>
+                        </h2>
+                        <div id="collapseLenteAnteojo" class="accordion-collapse collapse" aria-labelledby="headingLenteAnteojo" data-bs-parent="#accordionLenteAnteojo">
+                            <div class="accordion-body">
+                                <div class="form-check mb-2">
+                                    <InputCheckbox @bind-Value="saleNoteCurrent.IsPatientLenses" class="form-check-input" id="lenteCheck" />
+                                    <label class="form-check-label" for="lenteCheck">Lentes del Paciente</label>
+                                </div>
+                                <InputTextArea @bind-Value="saleNoteCurrent.LensAdaptationNotes" class="form-control" rows="2" placeholder="Diseño / Material / Tipo / Tratamiento / Color" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Adaptación armazón -->
+                <div class="accordion mb-1" id="accordionArmazon">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingArmazon">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArmazon" aria-expanded="false" aria-controls="collapseArmazon">
+                                Adaptación de Armazón
+                            </button>
+                        </h2>
+                        <div id="collapseArmazon" class="accordion-collapse collapse" aria-labelledby="headingArmazon" data-bs-parent="#accordionArmazon">
+                            <div class="accordion-body">
+                                <div class="form-check mb-2">
+                                    <InputCheckbox @bind-Value="saleNoteCurrent.IsPatientFrame" class="form-check-input" id="frameCheck" />
+                                    <label class="form-check-label" for="frameCheck">Armazón del Paciente</label>
+                                </div>
+                                <InputTextArea @bind-Value="saleNoteCurrent.FrameAdaptationNotes" class="form-control" rows="2" placeholder="Marca / Modelo / Medida / Color / Diseño / Material" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Lente de contacto -->
+                <div class="accordion mb-1" id="accordionLenteContacto">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingLenteContacto">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLenteContacto" aria-expanded="false" aria-controls="collapseLenteContacto">
+                                Adaptación Lente Contacto
+                            </button>
+                        </h2>
+                        <div id="collapseLenteContacto" class="accordion-collapse collapse" aria-labelledby="headingLenteContacto" data-bs-parent="#accordionLenteContacto">
+                            <div class="accordion-body">
+                                <InputTextArea @bind-Value="saleNoteCurrent.ContactLensAdaptationNotes" class="form-control" rows="2" placeholder="Propósito / Diseño / Dureza / Uso / Color" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion mb-1" id="accordionGraduacion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingGraduacion">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGraduacion" aria-expanded="false" aria-controls="collapseGraduacion">
+                                Graduación
+                            </button>
+                        </h2>
+                        <div id="collapseGraduacion" class="accordion-collapse collapse" aria-labelledby="headingGraduacion" data-bs-parent="#accordionGraduacion">
+                            <div class="accordion-body">
+
+                                <div class="form-check mb-2">
+                                    <InputCheckbox @bind-Value="saleNoteCurrent.IsPatientPrescription" class="form-check-input" id="recetaCheck" />
+                                    <label class="form-check-label" for="recetaCheck">Receta Paciente</label>
+                                </div>
+
+                                <table class="table table-bordered text-center align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th></th>
+                                            <th>O.D</th>
+                                            <th>O.I</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Esfera</td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OD_Sphere" class="form-control" /></td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OI_Sphere" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cilindro</td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OD_Cylinder" class="form-control" /></td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OI_Cylinder" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Eje</td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OD_Axis" class="form-control" /></td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OI_Axis" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Adición</td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OD_Addition" class="form-control" /></td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OI_Addition" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Prisma</td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OD_Prism" class="form-control" /></td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OI_Prism" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>DNP</td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OD_DNP" class="form-control" /></td>
+                                            <td><InputText @bind-Value="saleNoteCurrent.OI_DNP" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>DIP (LEJOS)</td>
+                                            <td colspan="2"><InputText @bind-Value="saleNoteCurrent.DIP_Far" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>DIP (CERCA)</td>
+                                            <td colspan="2"><InputText @bind-Value="saleNoteCurrent.DIP_Near" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>ALTURA</td>
+                                            <td colspan="2"><InputText @bind-Value="saleNoteCurrent.Height" class="form-control" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="d-flex gap-3 mb-2">
+                                    <div class="form-check">
+                                        <InputCheckbox @bind-Value="saleNoteCurrent.IsBifocal" class="form-check-input" id="bifocalCheck" />
+                                        <label class="form-check-label" for="bifocalCheck">Bifocal</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <InputCheckbox @bind-Value="saleNoteCurrent.IsProgressive" class="form-check-input" id="progresivoCheck" />
+                                        <label class="form-check-label" for="progresivoCheck">Progresivo</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2">
+                                    <div class="col">
+                                        <InputText @bind-Value="saleNoteCurrent.VertexDistance" class="form-control" placeholder="Distancia Vértice" />
+                                    </div>
+                                    <div class="col">
+                                        <InputText @bind-Value="saleNoteCurrent.PantoscopicAngle" class="form-control" placeholder="Ángulo Pantoscópico" />
+                                    </div>
+                                    <div class="col">
+                                        <InputText @bind-Value="saleNoteCurrent.PanoramicAngle" class="form-control" placeholder="Ángulo Panorámico" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion mb-1" id="accordionAccesorios">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingAccesorios">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccesorios" aria-expanded="false" aria-controls="collapseAccesorios">
+                                Accesorios / Consumibles / Refacciones
+                            </button>
+                        </h2>
+                        <div id="collapseAccesorios" class="accordion-collapse collapse" aria-labelledby="headingAccesorios" data-bs-parent="#accordionAccesorios">
+                            <div class="accordion-body">
+                                <div class="row align-items-end g-2 mb-3">
+                                    <div class="col">
+                                        <InputNumber @bind-Value="nuevoAccesorio.Quantity" class="form-control" placeholder="Cantidad" />
+                                    </div>
+                                    <div class="col">
+                                        <InputText @bind-Value="nuevoAccesorio.Description" class="form-control" placeholder="Descripción" />
+                                    </div>
+                                    <div class="col">
+                                        <InputNumber @bind-Value="nuevoAccesorio.UnitPrice" class="form-control" placeholder="P. Unitario" />
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-success" type="button" @onclick="AgregarAccesorio">Agregar</button>
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Cantidad</th>
+                                            <th>Descripción</th>
+                                            <th>P. Unitario</th>
+                                            <th>Importe</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in accesorios)
+                                        {
+                                            <tr>
+                                                <td>@item.Quantity</td>
+                                                <td>@item.Description</td>
+                                                <td>@item.UnitPrice.ToString("C", new System.Globalization.CultureInfo("es-MX"))</td>
+                                                <td>@item.Total.ToString("C", new System.Globalization.CultureInfo("es-MX"))</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion mb-1" id="accordionAbonos">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingAbono">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAbono" aria-expanded="false" aria-controls="collapseAbono">
+                                Registro de Anticipo / Abonos / Liquidación
+                            </button>
+                        </h2>
+                        <div id="collapseAbono" class="accordion-collapse collapse" aria-labelledby="headingAbono" data-bs-parent="#accordionAbonos">
+                            <div class="accordion-body">
+                                <div class="row g-2 align-items-end mb-3">
+                                    <div class="col">
+                                        <InputDate @bind-Value="nuevoPago.PaymentDate" class="form-control" />
+                                    </div>
+                                    <div class="col">
+                                        <InputNumber @bind-Value="nuevoPago.AmountPaid" class="form-control" placeholder="Abono" />
+                                    </div>
+                                    <div class="col">
+                                        <input class="form-control" value="@CalcularSaldoRestante().ToString("C", new System.Globalization.CultureInfo("es-MX"))" readonly />
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <button class="btn btn-success" type="button" @onclick="AgregarPago">Agregar</button>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Abono</th>
+                                            <th>Saldo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var pago in SaleNotePayments)
+                                        {
+                                            <tr>
+                                                <td>@pago.PaymentDate.ToShortDateString()</td>
+                                                <td>@pago.AmountPaid.ToString("C", new System.Globalization.CultureInfo("es-MX"))</td>
+                                                <td>@pago.RemainingBalance?.ToString("C", new System.Globalization.CultureInfo("es-MX"))</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion mb-1" id="accordionPago">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingPago">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapsePago"
+                                    aria-expanded="false" aria-controls="collapsePago">
+                                Modalidad de Pago
+                            </button>
+                        </h2>
+                        <div id="collapsePago" class="accordion-collapse collapse"
+                             aria-labelledby="headingPago" data-bs-parent="#accordionPago">
+                            <div class="accordion-body">
+                                <div class="row g-3">
+
+                                    <!-- Forma de pago principal -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Forma de pago</label>
+                                        <InputSelect @bind-Value="saleNoteCurrent.PaymentMethod" class="form-select">
+                                            <option value="">Selecciona</option>
+                                            @foreach (var forma in formasPago)
+                                            {
+                                                <option value="@forma">@forma</option>
+                                            }
+                                        </InputSelect>
+                                    </div>
+
+                                    <!-- Meses a crédito -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Meses a crédito</label>
+                                        <InputSelect @bind-Value="saleNoteCurrent.CreditMonths" class="form-select">
+                                            <option value="">Selecciona</option>
+                                            <option value="3">3 meses</option>
+                                            <option value="6">6 meses</option>
+                                            <option value="9">9 meses</option>
+                                            <option value="12">12 meses</option>
+                                            <option value="18">18 meses</option>
+                                            <option value="24">24 meses</option>
+                                        </InputSelect>
+                                    </div>
+
+                                    <!-- Bancos -->
+                                    <div class="col-md-4">
+                                        <InputText @bind-Value="saleNoteCurrent.BankOrigin"
+                                                   class="form-control mb-2"
+                                                   placeholder="Banco Origen" />
+                                        <InputText @bind-Value="saleNoteCurrent.BankDestination"
+                                                   class="form-control"
+                                                   placeholder="Banco Destino" />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion mb-1" id="accordionImportes">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingImportes">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseImportes" aria-expanded="false" aria-controls="collapseImportes">
+                                Importes
+                            </button>
+                        </h2>
+
+                        <div id="collapseImportes" class="accordion-collapse collapse" aria-labelledby="headingImportes" data-bs-parent="#accordionImportes">
+                            <div class="accordion-body">
+
+                                <div class="mb-3">
+                                    <label class="form-label">ARMAZÓN</label>
+                                    <InputNumber @bind-Value="saleNoteCurrent.Amount_Frame" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">LENTE OFTÁLMICA / SOLAR / CONTACTO</label>
+                                    <InputNumber @bind-Value="saleNoteCurrent.Amount_Lens" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ACCESORIOS Y CONSUMIBLES</label>
+                                    <InputNumber @bind-Value="saleNoteCurrent.Amount_Accessories" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">SERVICIO</label>
+                                    <InputNumber @bind-Value="saleNoteCurrent.Amount_Service" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">SUBTOTAL</label>
+                                    <InputNumber @bind-Value="saleNoteCurrent.Subtotal" class="form-control" disabled />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">DESCUENTO</label>
+                                    <InputNumber @bind-Value="saleNoteCurrent.Discount" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">TOTAL</label>
+                                    <InputNumber @bind-Value="saleNoteCurrent.Total" class="form-control" disabled />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">FECHA COMPROMISO</label>
+                                    <InputDate @bind-Value="saleNoteCurrent.CommitmentDate" class="form-control" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                </div>
+
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public long Id { get; set; }
+
+    private List<Person> personList = new();
+
+    private DateTime? _fechaOrden;
+    private DateTime? FechaOrden
+    {
+        get => _fechaOrden;
+        set
+        {
+            if (_fechaOrden != value)
+            {
+                _fechaOrden = value;
+                _ = OnClienteChanged(_fechaOrden);
+            }
+        }
+    }
+
+
+    private long _selectedPersonId;
+    private long SelectedPersonId
+    {
+        get => _selectedPersonId;
+        set
+        {
+            if (_selectedPersonId != value)
+            {
+                _selectedPersonId = value;
+
+                // ⚠️ Solo cambia datos si NO estás editando
+                if (!isEditMode)
+                    _ = OnClienteChanged(_selectedPersonId);
+            }
+        }
+    }
+
+    private List<string> formasPago = new() {"Efectivo", "Tarjeta Débito", "Tarjeta Crédito", "Transferencia", "Depósito", "Otro"};
+
+
+    private SaleNoteDetailDto saleNote = new();
+    private SaleNoteDetailDto saleNoteCurrent = new();
+    private List<SaleNoteAccessoryDto> accesorios = new();
+    private SaleNoteAccessoryDto nuevoAccesorio = new();
+    private List<SaleNotePaymentDto> SaleNotePayments = new();
+
+    private SaleNotePaymentDto nuevoPago = new()
+    {
+        PaymentDate = DateTime.Today,
+        AmountPaid = 0,
+        RemainingBalance = 0,
+    };
+
+    private bool isEditMode = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        FechaOrden = DateTime.UtcNow;
+
+
+        await LoadPersonList();
+
+        if (Id > 0) // Modo edición
+        {
+            isEditMode = true;
+
+            var response = await SalesNoteService.GetSaleNoteByIdAsync(Id);
+
+            if (response?.Data != null)
+            {
+                saleNote = response.Data;
+
+                // Asigna directo sin invocar setter
+                _selectedPersonId = saleNote.PacienteId;
+
+                accesorios = saleNote.Accessories ?? new();
+                SaleNotePayments = saleNote.Payments ?? new();
+                saleNoteCurrent = saleNote;
+            }
+            else
+            {
+                await SweetAlertService.FireAsync("Error", "No se pudo cargar la nota de venta.", "error");
+                NavigationManager.NavigateTo("/Sales/Sale");
+            }
+
+
+
+        }
+        else // Modo creación
+        {
+            saleNote = new SaleNoteDetailDto
+            {
+                OrderNumber = GenerarFolio(),
+                SaleDate = DateTime.Now,
+                CommitmentDate = DateTime.Today
+            };
+
+            accesorios = new();
+            SaleNotePayments = new();
+        }
+
+        // ⚠️ Faltaba esto:
+        CalcularImportes();
+    }
+
+    private string GenerarFolio()
+    {
+        return $"OVR-{DateTime.Now:yyyyMMddHHmmss}";
+    }
+    void RegresarALista()
+    {
+        NavigationManager.NavigateTo("/Sales/Sale");
+    }
+
+    private async Task LoadPersonList()
+    {
+        var response = await PersonService.GetPersonsAsync();
+
+        personList = response?.Data ?? new List<Person>();
+
+        // Forzar re-render explícitamente
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+
+        CalcularImportes(); // 🔁 Asegúrate de calcular antes de validar o guardar
+
+        saleNoteCurrent.Accessories = accesorios;
+        saleNoteCurrent.Payments = SaleNotePayments;
+        saleNote = saleNoteCurrent;
+
+        var sumaAbonos = SaleNotePayments.Sum(p => p.AmountPaid);
+        var totalNota = saleNote.Total;
+
+        // if (sumaAbonos != totalNota)
+        // {
+        //     await SweetAlertService.FireAsync("Validación",
+        //         $"El total de los abonos (${sumaAbonos:F2}) no coincide con el total de la nota (${totalNota:F2}).",
+        //         "warning");
+        //     return;
+        // }
+
+        try
+        {
+            if (Id == 0)
+            {
+                var responseCreate = await SalesNoteService.CreateSaleNoteAsync(saleNote);
+
+                if (responseCreate != null && (responseCreate.Code == 200 || responseCreate.Code == 201) && responseCreate.Data > 0)
+                {
+                    await SweetAlertService.FireAsync("¡Éxito!", "La nota fue creada correctamente.", "success");
+                    NavigationManager.NavigateTo("/Sales/Sale");
+                }
+                else
+                {
+                    await SweetAlertService.FireAsync("Error", responseCreate?.Message ?? "Error al crear la nota.", "error");
+                }
+            }
+            else
+            {
+                var responseUpdate = await SalesNoteService.UpdateSaleNoteAsync(Id, saleNote);
+
+                if (responseUpdate != null && (responseUpdate.Code == 200 || responseUpdate.Code == 201))
+                {
+                    await SweetAlertService.FireAsync("¡Éxito!", "La nota fue actualizada correctamente.", "success");
+                }
+                else
+                {
+                    await SweetAlertService.FireAsync("Error", responseUpdate?.Message ?? "Error al actualizar la nota.", "error");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await SweetAlertService.FireAsync("Excepción", $"Ocurrió un error inesperado: {ex.Message}", "error");
+        }
+    }
+    private void AgregarAccesorio()
+    {
+        if (nuevoAccesorio.Quantity > 0 && !string.IsNullOrWhiteSpace(nuevoAccesorio.Description))
+        {
+            nuevoAccesorio.Total = nuevoAccesorio.Quantity * nuevoAccesorio.UnitPrice;
+            accesorios.Add(nuevoAccesorio);
+            nuevoAccesorio = new();
+            CalcularImportes();
+        }
+    }
+
+    private void AgregarPago()
+    {
+        if (nuevoPago.AmountPaid > 0 && nuevoPago.RemainingBalance is not null )
+        {
+            // 🔧 CALCULA el saldo restante aquí
+            var saldoRestante = CalcularSaldoRestante();
+
+            SaleNotePayments.Add(new SaleNotePaymentDto
+            {
+                SaleNoteId = saleNote.SaleNoteId,
+                PaymentDate = nuevoPago.PaymentDate == default ? DateTime.Today : nuevoPago.PaymentDate,
+                AmountPaid = nuevoPago.AmountPaid,
+                RemainingBalance = saldoRestante,
+                Notes = nuevoPago.Notes ?? ""
+            });
+
+            // Limpia los campos
+            nuevoPago = new SaleNotePaymentDto
+            {
+                PaymentDate = DateTime.Today,
+                AmountPaid = 0,
+                RemainingBalance = 0,
+
+            };
+        }
+    }
+
+
+    private void CalcularImportes()
+    {
+        saleNoteCurrent.Amount_Accessories = accesorios.Sum(a => a.Total);
+        saleNoteCurrent.Amount_Frame ??= 0;
+        saleNoteCurrent.Amount_Lens ??= 0;
+        saleNoteCurrent.Amount_Service ??= 0;
+
+        var subtotal = (saleNoteCurrent.Amount_Accessories ?? 0)
+                     + (saleNoteCurrent.Amount_Frame ?? 0)
+                     + (saleNoteCurrent.Amount_Lens ?? 0)
+                     + (saleNoteCurrent.Amount_Service ?? 0);
+
+        saleNoteCurrent.Subtotal = subtotal;
+        saleNoteCurrent.Discount ??= 0;
+        saleNoteCurrent.Total = subtotal - saleNoteCurrent.Discount.Value;
+    }
+
+
+    // private decimal CalcularSaldoRestante()
+    // {
+    //     var totalAbonado = SaleNotePayments.Sum(p => p.AmountPaid);
+    //     var saldo = saleNoteCurrent.Total - totalAbonado - nuevoPago.AmountPaid;
+    //     return saldo < 0 ? 0 : saldo;
+    // }
+
+    private decimal CalcularSaldoRestante()
+    {
+        var total = saleNoteCurrent.Total;
+        var abonado = SaleNotePayments.Sum(p => p.AmountPaid);
+        var saldo = total - abonado - nuevoPago.AmountPaid;
+        return saldo < 0 ? 0 : saldo;
+    }
+
+
+
+    private async Task OnClienteChanged(DateTime? fecha)
+    {
+        _fechaOrden = fecha;
+    }
+    private async Task OnClienteChanged(long newPersonId)
+    {
+        Console.WriteLine($">>> Cambio de cliente: {newPersonId}");
+
+        if (newPersonId > 0)
+        {
+            var response = await PersonService.GetByIdAsync(newPersonId);
+
+            if (response.Code == 200 && response.Data != null)
+            {
+                var p = response.Data;
+
+                saleNote.ClienteNombre = p.FullName;
+                saleNote.ClienteTelefono = p.PhoneNumber ?? "";
+                saleNote.ClienteEmail = p.Email ?? "";
+                saleNote.AddressStreetNumber = p.AddressStreetNumber ?? "";
+                saleNote.AddressNeighborhood = p.AddressNeighborhood ?? "";
+                saleNote.AddressCity = p.AddressCity ?? "";
+                saleNote.AddressState = p.AddressState ?? "";
+                saleNote.AddressPostalCode = p.AddressPostalCode?.ToString() ?? "";
+            }
+        }
+        else
+        {
+            saleNote.ClienteNombre = "";
+            saleNote.ClienteTelefono = "";
+            saleNote.ClienteEmail = "";
+            saleNote.AddressStreetNumber = "";
+            saleNote.AddressNeighborhood = "";
+            saleNote.AddressCity = "";
+            saleNote.AddressState = "";
+            saleNote.AddressPostalCode = "";
+        }
+
+        // Muy importante para que refresque bien la vista
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public class GraduacionModel
+    {
+        public string Esfera { get; set; } = string.Empty;
+        public string Cilindro { get; set; } = string.Empty;
+        public string Eje { get; set; } = string.Empty;
+        public string Adicion { get; set; } = string.Empty;
+        public string Prisma { get; set; } = string.Empty;
+        public string DNP { get; set; } = string.Empty;
+    }
+
+    public class SaleNotePaymentModel
+    {
+        public DateTime Fecha { get; set; } = DateTime.Today;
+        public decimal Monto { get; set; }
+        public string Saldo { get; set; } = string.Empty;
+        public string FormaPago { get; set; } = string.Empty;
+    }
+
+
+
+
+    protected override void OnParametersSet()
+    {
+        if (Id == 1)
+        {
+            // TODO: Aquí conservas tu lógica dummy como ya la tenías
+            // Está bien, no necesitas cambiarlo.
+        }
+        else
+        {
+            saleNote = new SaleNoteDetailDto();
+        }
+    }
+
+
+}

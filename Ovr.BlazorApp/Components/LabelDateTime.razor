@@ -1,0 +1,23 @@
+﻿@using System.Globalization
+
+<span class="@CssClass">
+    @if (Value.HasValue && Value.Value != DateTime.MinValue)
+    {
+        @Value.Value.ToString(Format, CultureInfo.InvariantCulture)
+    }
+    else
+    {
+        <span class="text-muted">Sin fecha</span>
+    }
+</span>
+
+@code {
+    [Parameter]
+    public DateTime? Value { get; set; }
+
+    [Parameter]
+    public string Format { get; set; } = "dd/MM/yyyy HH:mm";
+
+    [Parameter]
+    public string CssClass { get; set; } = "form-control-plaintext text-center";
+}

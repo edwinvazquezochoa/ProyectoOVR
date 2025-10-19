@@ -1,0 +1,90 @@
+﻿@page "/Modals/modrole"
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@inject IRoleService _roleService
+@inject SweetAlertService Swal
+@inject NavigationManager NavigationManager
+
+
+
+<div class="modal fade" id="roleModal" tabindex="-1" aria-labelledby="roleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-title modal-dialog-centered">
+        <!-- Pequeño y centrado -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roleModalLabel">Agregar Rol</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="RoleName" class="form-label">Nombre del Rol</label>
+                        <input type="text" id="RoleName" class="form-control" placeholder="Ingrese el nombre del rol" autofocus>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary btn-sm">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public Role _role { get; set; } = new Role();
+
+    // Método para cerrar el modal
+    private void CloseModal()
+    {
+        // Simula un cierre; en una integración real, deberías notificar al componente padre
+        NavigationManager.NavigateTo("/");
+    }
+
+    // Método para guardar los cambios
+    private async Task Guardar()
+    {
+        string mensaje;
+        bool resultado;
+
+        if (_role.RoleId != 0)
+        {
+            // Actualizar rol existente
+            var response = await _roleService.UpdateRoleAsync(_role.RoleId, _role);
+            resultado = response.Code == 200;
+            mensaje = resultado ? "Rol modificado correctamente." : "Error al modificar el rol.";
+        }
+        else
+        {
+            // Crear nuevo rol
+            var response = await _roleService.CreateRoleAsync(_role);
+            resultado = response.Code == 200;
+            mensaje = resultado ? "Rol creado correctamente." : "Error al crear el rol.";
+        }
+
+        // Mostrar mensaje con SweetAlert2
+        if (resultado)
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Éxito",
+                    Text = mensaje,
+                    Icon = SweetAlertIcon.Success
+                });
+
+            // Cierra el modal después de guardar
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Error",
+                    Text = mensaje,
+                    Icon = SweetAlertIcon.Error
+                });
+        }
+    }
+}

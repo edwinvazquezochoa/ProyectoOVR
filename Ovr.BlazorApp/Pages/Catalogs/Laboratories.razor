@@ -1,0 +1,225 @@
+﻿@page "/Catalogs/Laboratories"
+
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@using Ovr.Domain.Responses
+@inject SweetAlertService SweetAlertService
+@inject ILaboratoryService laboratoryService
+@inject IJSRuntime JSRuntime
+
+<div class="card shadow-sm mt-3">
+    <div class="card-header bg-body text-bg-primary">
+        <h3 class="card-title mb-0">Gestión de Laboratorios</h3>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-primary" @onclick="ShowAddModal">
+                <i class="bi bi-plus-circle me-1"></i> Agregar Laboratorio
+            </button>
+            <button class="btn btn-success" @onclick="DownloadExcel" disabled="@isDownloading">
+                <i class="bi bi-file-earmark-excel me-1"></i>
+                @if (isDownloading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                    <span>Descargando...</span>
+                }
+                else
+                {
+                    <span>Exportar</span>
+                }
+            </button>
+        </div>
+
+        <input class="form-control mb-3" placeholder="Buscar laboratorio..." @bind="searchTerm" @bind:event="oninput" />
+
+        <table class="table table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th @onclick="() => SortByColumn(nameof(Laboratory.LaboratoryId))">ID</th>
+                    <th @onclick="() => SortByColumn(nameof(Laboratory.LaboratoryName))">Nombre</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!PagedLaboratories.Any())
+                {
+                    <tr><td colspan="3" class="text-center">No hay laboratorios disponibles.</td></tr>
+                }
+                else
+                {
+                    @foreach (var lab in PagedLaboratories)
+                    {
+                        <tr>
+                            <td>@lab.LaboratoryId</td>
+                            <td>@lab.LaboratoryName</td>
+                            <td class="text-center">
+                                <button class="btn btn-warning btn-sm" @onclick="() => ShowEditModal(lab)">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <button class="page-link" @onclick="PreviousPage">Anterior</button>
+                </li>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(currentPage == i ? "active" : "")">
+                        <button class="page-link" @onclick="() => GoToPage(i)">@i</button>
+                    </li>
+                }
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <button class="page-link" @onclick="NextPage">Siguiente</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@if (IsModalOpen)
+{
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <EditForm Model="SelectedLab" OnValidSubmit="SaveLab">
+                    <DataAnnotationsValidator />
+                    <div class="modal-header">
+                        <h5 class="modal-title">@ModalTitle</h5>
+                        <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label class="form-label">Nombre del laboratorio</label>
+                            <InputText class="form-control" @bind-Value="SelectedLab.LaboratoryName" />
+                            <ValidationMessage For="@(() => SelectedLab.LaboratoryName)" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                        <button class="btn btn-primary" type="submit">Guardar</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    </div>
+}
+
+@code {
+    private List<Laboratory> laboratories = new();
+    private List<Laboratory> filtered = new();
+    private Laboratory SelectedLab = new();
+    private string ModalTitle = "";
+    private bool IsModalOpen = false;
+    private string searchTerm = "";
+    private string sortColumn = nameof(Laboratory.LaboratoryId);
+    private bool ascending = true;
+    private int currentPage = 1;
+    private int pageSize = 5;
+    private bool isDownloading = false;
+
+    private int totalPages => (int)Math.Ceiling((double)filtered.Count / pageSize);
+    private List<Laboratory> PagedLaboratories => filtered.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+    protected override async Task OnInitializedAsync() => await LoadLaboratories();
+
+    private async Task LoadLaboratories()
+    {
+        var response = await laboratoryService.GetLaboratoriesAsync();
+        laboratories = response?.Code == 200 && response.Data != null ? response.Data : new();
+        ApplyFilterAndSort();
+    }
+
+    private void ApplyFilterAndSort()
+    {
+        var query = laboratories.Where(l => string.IsNullOrEmpty(searchTerm) || l.LaboratoryName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+        query = ascending ? query.OrderBy(l => typeof(Laboratory).GetProperty(sortColumn)?.GetValue(l))
+                          : query.OrderByDescending(l => typeof(Laboratory).GetProperty(sortColumn)?.GetValue(l));
+        filtered = query.ToList();
+        if (currentPage > totalPages) currentPage = totalPages > 0 ? totalPages : 1;
+    }
+
+    private void SortByColumn(string col)
+    {
+        if (sortColumn == col) ascending = !ascending;
+        else { sortColumn = col; ascending = true; }
+        ApplyFilterAndSort();
+    }
+
+    private void PreviousPage() => currentPage = Math.Max(1, currentPage - 1);
+    private void NextPage() => currentPage = Math.Min(totalPages, currentPage + 1);
+    private void GoToPage(int page) => currentPage = page;
+
+    private void ShowAddModal()
+    {
+        SelectedLab = new();
+        ModalTitle = "Agregar laboratorio";
+        IsModalOpen = true;
+    }
+
+    private void ShowEditModal(Laboratory lab)
+    {
+        SelectedLab = new Laboratory { LaboratoryId = lab.LaboratoryId, LaboratoryName = lab.LaboratoryName };
+        ModalTitle = "Editar laboratorio";
+        IsModalOpen = true;
+    }
+
+    private void CloseModal() => IsModalOpen = false;
+
+    private async Task SaveLab()
+    {
+        ResponseBase<Laboratory> response = SelectedLab.LaboratoryId == 0
+            ? await laboratoryService.CreateLaboratoryAsync(SelectedLab)
+            : await laboratoryService.UpdateLaboratoryAsync(SelectedLab.LaboratoryId, SelectedLab);
+
+        if (response.Code == 200 || response.Code == 201)
+        {
+            await LoadLaboratories();
+            CloseModal();
+        }
+        else if (response.Code == 409)
+            await SweetAlertService.FireAsync("Duplicado", $"El laboratorio '{SelectedLab.LaboratoryName}' ya existe.", SweetAlertIcon.Warning);
+        else
+            await SweetAlertService.FireAsync("Error", response.Message, SweetAlertIcon.Error);
+    }
+
+
+    private async Task DownloadExcel()
+    {
+        isDownloading = true;
+        try
+        {
+            using var workbook = new ClosedXML.Excel.XLWorkbook();
+            var sheet = workbook.Worksheets.Add("Laboratorios");
+            sheet.Cell(1, 1).Value = "ID";
+            sheet.Cell(1, 2).Value = "Nombre";
+
+            for (int i = 0; i < laboratories.Count; i++)
+            {
+                sheet.Cell(i + 2, 1).Value = laboratories[i].LaboratoryId;
+                sheet.Cell(i + 2, 2).Value = laboratories[i].LaboratoryName;
+            }
+
+            sheet.Columns().AdjustToContents();
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            await JSRuntime.InvokeVoidAsync("window.DescargarExcel", $"Reporte_Laboratorios_{DateTime.Now:yyyyMMddHHmmss}.xlsx", Convert.ToBase64String(stream.ToArray()));
+        }
+        catch (Exception ex)
+        {
+            await SweetAlertService.FireAsync("Error", ex.Message, SweetAlertIcon.Error);
+        }
+        finally
+        {
+            isDownloading = false;
+        }
+    }
+}

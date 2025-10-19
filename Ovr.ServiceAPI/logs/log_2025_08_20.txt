@@ -1,0 +1,144 @@
+Registro ID: 90b9d196-0edb-4b48-8d2e-3445fe7d0083
+Fecha y Hora: 2025-08-20 15:19:39
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 66443363-2108-44d0-b266-dd54e21f2768
+Fecha y Hora: 2025-08-20 15:19:45
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 04369a83-a104-4975-97a8-baa5154da90e
+Fecha y Hora: 2025-08-20 15:19:46
+Contexto: SalesNoteController.GetById
+Mensaje: Nota de venta con ID 11 obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: b884d02b-1b98-45f6-89a7-e080a5d26378
+Fecha y Hora: 2025-08-20 15:19:49
+Contexto: SalesNoteController.Update
+Mensaje: Nota de venta con ID 11 actualizada correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: cc5c7736-b875-43a3-8457-15f0650d6523
+Fecha y Hora: 2025-08-20 15:20:09
+Contexto: FrameController.GetAll
+Mensaje: Lista de frames obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: c1b06fd1-9e5c-4a44-a47e-a9584f8a0ae4
+Fecha y Hora: 2025-08-20 15:20:13
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 1497053e-f2dc-4b14-950d-ef296440f90a
+Fecha y Hora: 2025-08-20 15:20:23
+Contexto: RoleController.GetAll
+Mensaje: Lista de roles obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 35d4aee9-14d0-4dfd-b17f-c5282768e414
+Fecha y Hora: 2025-08-20 15:20:29
+Contexto: BranchController.GetAll
+Mensaje: Lista de Branchs obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 0be469d9-b2f6-434a-93de-18389a1403f4
+Fecha y Hora: 2025-08-20 15:20:47
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: fc1f5ba5-3a5d-4d6c-ab36-bed420dfaec5
+Fecha y Hora: 2025-08-20 15:20:47
+Contexto: RoleController.GetAll
+Mensaje: Lista de roles obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: e825e278-3de5-4467-9d57-4ec05070f6b8
+Fecha y Hora: 2025-08-20 15:20:47
+Contexto: BranchController.GetAll
+Mensaje: Lista de Branchs obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 0287f8f6-3f75-4bf6-a92c-62a1a0385a76
+Fecha y Hora: 2025-08-20 15:20:50
+Contexto: MenuController.GetAll
+Mensaje: Lista de menu obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: b57d8d4e-1924-42cf-8b5b-f1a716785eb2
+Fecha y Hora: 2025-08-20 15:20:55
+Contexto: MenuPermissionController.GetUserAsync
+Mensaje: Permisos de menú obtenidos correctamente para el usuario 1.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: b557b9ea-92c7-4dd6-81e7-d23e797f62ba
+Fecha y Hora: 2025-08-20 15:20:59
+Contexto: MenuPermissionController.InsertOrUpdate
+Mensaje: Permisos de menú insertados o actualizados correctamente para el usuario 1.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 31470d43-6ce1-45a4-99aa-dbac33b34c4b
+Fecha y Hora: 2025-08-20 15:20:59
+Contexto: MenuPermissionController.GetUserAsync
+Mensaje: Permisos de menú obtenidos correctamente para el usuario 1.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 188c006f-8ded-45b0-8d2b-fba72db31792
+Fecha y Hora: 2025-08-20 15:21:03
+Contexto: RoleController.GetAll
+Mensaje: Lista de roles obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 5b781d23-0ea8-4426-9c4f-cadaaec69740
+Fecha y Hora: 2025-08-20 15:21:03
+Contexto: MenuController.GetAll
+Mensaje: Lista de menu obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: c7dc8d5d-4d22-4fb0-b7a0-0b48e097ee05
+Fecha y Hora: 2025-08-20 15:21:06
+Contexto: MenuPermissionController.GetRoleAsync
+Mensaje: Permisos de menú obtenidos correctamente para el rol 1.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: ed359cbc-d3ef-4e3d-959b-2bbf38bdb0e1
+Fecha y Hora: 2025-08-20 15:21:08
+Contexto: MenuPermissionController.InsertOrUpdateByRole
+Mensaje: Permisos de menú insertados o actualizados correctamente para el rol 1.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 5c47683c-cba1-49e5-a37d-3011f6302388
+Fecha y Hora: 2025-08-20 15:21:08
+Contexto: MenuPermissionController.GetRoleAsync
+Mensaje: Permisos de menú obtenidos correctamente para el rol 1.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 22a53db6-1840-48e6-a211-47d0d0f7369f
+Fecha y Hora: 2025-08-20 15:21:33
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 13633bda-bf57-4e70-b0e2-0c736249842b
+Fecha y Hora: 2025-08-20 15:21:40
+Contexto: MenuController.GetAll
+Mensaje: Lista de menu obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 0a1bfb96-ceb0-427f-adcc-56492c3753f4
+Fecha y Hora: 2025-08-20 15:21:42
+Contexto: RoleController.GetAll
+Mensaje: Lista de roles obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: bb1d1b6c-837a-4b04-ab92-e19073c8ab89
+Fecha y Hora: 2025-08-20 16:47:07
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,321 @@
+﻿@page "/Settings/SettingPermissionsUser"
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@inject SweetAlertService SweetAlertService
+@inject IMenuPermissionService MenuPermissionService
+@inject IMenuService MenuService
+@inject IUserService UserService
+
+<h3>Gestión de permisos por usuario</h3>
+
+@if (IsLoading)
+{
+	<p><em>Cargando...</em></p>
+}
+else
+{
+	<div class="d-flex align-items-center gap-3 mb-3">
+		<div>
+			<label for="usuarioSelect" class="form-label mb-1">Usuario:</label>
+			<select id="usuarioSelect" class="form-select" style="min-width: 300px;"
+			@bind-Value="SelectedUserId" @bind-Value:event="onchange">
+				<option value="">-- Selecciona un usuario --</option>
+				@foreach (var user in Users)
+				{
+					<option value="@user.UserId">@user.FullName</option>
+				}
+			</select>
+		</div>
+		<div class="mt-4">
+			<strong>Rol:</strong> @UsuarioRol
+		</div>
+	</div>
+	@if (SelectedUserId > 0)
+	{
+		<button class="btn btn-outline-secondary mb-3" @onclick="RestablecerPermisosDesdeRol">
+			<i class="fas fa-sync-alt me-1"></i> Restablecer permisos del rol asignado
+		</button>
+	}
+	<div class="table-responsive">
+		<table class="table table-sm compact-rows align-middle text-center">
+			<thead class="table-light">
+				<tr>
+					<th>Menú</th>
+					@foreach (var permiso in PermissionNames)
+					{
+						<th class="text-center">@permiso</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@if (SelectedUserId == 0)
+				{
+					<tr>
+						<td colspan="10" class="text-center text-muted py-4">
+							Selecciona un usuario para mostrar los permisos.
+						</td>
+					</tr>
+				}
+				else if (PermisosCompletos.Count == 0)
+				{
+					<tr>
+						<td colspan="10" class="text-center text-muted py-4">
+							<i class="fas fa-info-circle"></i>
+							No hay permisos establecidos para este usuario.
+						</td>
+					</tr>
+				}
+				else
+				{
+					@foreach (var permiso in PermisosCompletos)
+					{
+						<tr>
+							<td>@permiso.MenusName</td>
+							@foreach (var permisoNombre in PermissionNames)
+							{
+								<td class="text-center">
+									<input type="checkbox"
+									checked="@GetValorPermiso(permiso, permisoNombre)"
+									disabled="@HabilitarEdicionCheck"
+									@onchange="(e) => SetPermissionStatus(permiso.MenuId, permisoNombre, ((bool?)e.Value) ?? false)" />
+								</td>
+							}
+						</tr>
+					}
+				}
+			</tbody>
+
+
+
+		</table>
+		<p class="mt-2 fw-semibold text-muted">
+			Total permisos visibles: @PermisosCompletos.Count
+		</p>
+
+	</div>
+	@if (PermisosCompletos.Count()>0)
+	{
+		<div class="text-end mt-3">
+			<div class="fixed-save-button">
+
+				<button class="btn btn-primary" disabled="@DeshailitarBotonGuardar"
+				@onclick="GuardarPermisos">
+					@if (EstaGuardado)
+					{
+						<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+						<span>Guardando...</span>
+					}
+					else
+					{
+						<span>Guardar cambios</span>
+					}
+				</button>
+			</div>
+		</div>
+	}
+
+}
+
+@code {
+
+	private bool IsLoading = true;
+	private bool EstaGuardado = false;
+	private bool DeshailitarBotonGuardar = false;
+	private bool PermisosHeredadosDelRol = false;
+	private bool HabilitarEdicionCheck = false;
+	private string UsuarioRol = "";
+	private bool IsLoadingPermissions = false;
+
+	private long _selectedUserId;
+	private long SelectedUserId
+	{
+		get => _selectedUserId;
+		set
+		{
+			if (_selectedUserId != value)
+			{
+				_selectedUserId = value;
+				_ = OnUserSelected(_selectedUserId);
+			}
+		}
+	}
+
+	private List<User> Users = new();
+	private List<Menu> Menus = new();
+	private List<MenuPermission> UserPermissions = new();
+	private List<MenuPermission> PermisosCompletos = new();
+
+	private List<string> PermissionNames = new()
+	{
+		"Ver", "Crear", "Editar", "Borrar", "Exportar", "Imprimir", "Aprobar", "Cancelar", "Autorizar"
+	};
+
+	protected override async Task OnInitializedAsync()
+	{
+		var userResponse = await UserService.GetUsersAsync();
+		Users = userResponse?.Data ?? new List<User>();
+		Menus = await MenuService.GetMenusAsync();
+		IsLoading = false;
+	}
+
+	private async Task LoadUserPermissions()
+	{
+		IsLoadingPermissions = true;
+		DeshailitarBotonGuardar = true;
+		HabilitarEdicionCheck = true;
+
+		try
+		{
+			UserPermissions = await MenuPermissionService.GetByUserIdAsync(SelectedUserId) ?? new List<MenuPermission>();
+
+			if (UserPermissions.Count > 0)
+			{
+				// Ya existen permisos personalizados → se cargan tal cual
+				PermisosCompletos = UserPermissions;
+				HabilitarEdicionCheck = false;
+				DeshailitarBotonGuardar = false;
+			}
+			else
+			{
+				// No hay permisos → heredamos los del rol
+				var usuario = Users.FirstOrDefault(u => u.UserId == SelectedUserId);
+				if (usuario != null)
+				{
+					var permisosDelRol = await MenuPermissionService.GetByRoleIdAsync(usuario.RoleId) ?? new();
+
+					PermisosCompletos = permisosDelRol.Select(p => new MenuPermission
+						{
+							UserId = usuario.UserId,
+							MenuId = p.MenuId,
+							MenusName = p.MenusName,
+							CanView = p.CanView,
+							CanCreate = p.CanCreate,
+							CanEdit = p.CanEdit,
+							CanDelete = p.CanDelete,
+							CanExport = p.CanExport,
+							CanPrint = p.CanPrint,
+							CanApprove = p.CanApprove,
+							CanCancel = p.CanCancel,
+							CanAuthorize = p.CanAuthorize,
+							IsActive = true
+						}).ToList();
+
+					// Habilitar edición para permitir guardar esta herencia
+					HabilitarEdicionCheck = false;
+					DeshailitarBotonGuardar = false;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"[LoadUserPermissions] Error: {ex.Message}");
+		}
+		finally
+		{
+			IsLoadingPermissions = false;
+			await InvokeAsync(StateHasChanged);
+		}
+	}
+
+	private async Task RestablecerPermisosDesdeRol()
+	{
+		var usuario = Users.FirstOrDefault(u => u.UserId == SelectedUserId);
+		if (usuario == null) return;
+
+		var permisosDelRol = await MenuPermissionService.GetByRoleIdAsync(usuario.RoleId) ?? new();
+
+		PermisosCompletos = permisosDelRol.Select(p => new MenuPermission
+			{
+				UserId = usuario.UserId,
+				MenuId = p.MenuId,
+				MenusName = p.MenusName,
+				CanView = p.CanView,
+				CanCreate = p.CanCreate,
+				CanEdit = p.CanEdit,
+				CanDelete = p.CanDelete,
+				CanExport = p.CanExport,
+				CanPrint = p.CanPrint,
+				CanApprove = p.CanApprove,
+				CanCancel = p.CanCancel,
+				CanAuthorize = p.CanAuthorize,
+				IsActive = true
+			}).ToList();
+
+		HabilitarEdicionCheck = false;
+		DeshailitarBotonGuardar = false;
+
+		await SweetAlertService.FireAsync("Información", "Permisos restablecidos desde el rol. ¡No olvides guardar!", "info");
+		await InvokeAsync(StateHasChanged);
+	}
+
+	private async Task GuardarPermisos()
+	{
+		if (SelectedUserId == 0) return;
+		EstaGuardado = true;
+
+		try
+		{
+			var result = await MenuPermissionService.InsertOrUpdateAsync(PermisosCompletos, SelectedUserId);
+			if (result?.Code == 200 && result.Data != null)
+			{
+				UserPermissions = result.Data.ToList();
+				await LoadUserPermissions();
+				await SweetAlertService.FireAsync("Éxito", "Permisos guardados correctamente.", "success");
+			}
+			else
+			{
+				await SweetAlertService.FireAsync("Error", "No fue posible guardar permisos.", "error");
+			}
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"[GuardarPermisos] Error: {ex.Message}");
+		}
+		finally
+		{
+			EstaGuardado = false;
+		}
+	}
+
+	private bool GetValorPermiso(MenuPermission permiso, string permisoNombre) => permisoNombre switch
+	{
+		"Ver" => permiso.CanView,
+		"Crear" => permiso.CanCreate,
+		"Editar" => permiso.CanEdit,
+		"Borrar" => permiso.CanDelete,
+		"Exportar" => permiso.CanExport,
+		"Imprimir" => permiso.CanPrint,
+		"Aprobar" => permiso.CanApprove,
+		"Cancelar" => permiso.CanCancel,
+		"Autorizar" => permiso.CanAuthorize,
+		_ => false
+	};
+
+	private void SetPermissionStatus(int menuId, string permissionName, bool value)
+	{
+		var permiso = PermisosCompletos.FirstOrDefault(p => p.MenuId == menuId);
+		if (permiso == null) return;
+
+		switch (permissionName)
+		{
+			case "Ver": permiso.CanView = value; break;
+			case "Crear": permiso.CanCreate = value; break;
+			case "Editar": permiso.CanEdit = value; break;
+			case "Borrar": permiso.CanDelete = value; break;
+			case "Exportar": permiso.CanExport = value; break;
+			case "Imprimir": permiso.CanPrint = value; break;
+			case "Aprobar": permiso.CanApprove = value; break;
+			case "Cancelar": permiso.CanCancel = value; break;
+			case "Autorizar": permiso.CanAuthorize = value; break;
+		}
+	}
+
+	private async Task OnUserSelected(long userId)
+	{
+		SelectedUserId = userId;
+		var usuario = Users.FirstOrDefault(u => u.UserId == userId);
+		UsuarioRol = usuario?.RoleName ?? "Sin rol";
+		await LoadUserPermissions();
+	}
+}

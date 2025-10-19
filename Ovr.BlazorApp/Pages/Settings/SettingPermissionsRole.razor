@@ -1,0 +1,235 @@
+﻿@page "/Settings/SettingPermissionsRole"
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@using Ovr.Domain.Responses
+@inject SweetAlertService SweetAlertService
+@inject IMenuPermissionService MenuPermissionService
+@inject IMenuService MenuService
+@inject IRoleService RoleService
+
+<h3>Gestión de permisos por rol</h3>
+
+@if (IsLoading)
+{
+	<p><em>Cargando...</em></p>
+}
+else
+{
+	<div class="d-flex align-items-center gap-3 mb-3">
+		<div>
+			<label for="rolSelect" class="form-label mb-1">Rol:</label>
+			<select id="rolSelect" class="form-select" style="min-width: 300px;"
+			@bind-Value="SelectedRoleId" @bind-Value:event="onchange">
+				<option value="">-- Selecciona un rol --</option>
+				@foreach (var rol in Roles)
+				{
+					<option value="@rol.RoleId">@rol.RoleName</option>
+				}
+			</select>
+		</div>
+	</div>
+	<div class="table-responsive">
+		<table class="table table-sm compact-rows align-middle text-center">
+			<thead class="table-light">
+				<tr>
+					<th>Menú</th>
+					@foreach (var permiso in PermissionNames)
+					{
+						<th class="text-center">@permiso</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@if (SelectedRoleId == 0)
+				{
+					<tr>
+						<td colspan="10" class="text-center text-muted py-4">
+							Selecciona un rol para mostrar los permisos.
+						</td>
+					</tr>
+				}
+				else if (PermisosCompletos.Count == 0)
+				{
+					<tr>
+						<td colspan="10" class="text-center text-muted py-4">
+							<i class="fas fa-info-circle"></i>
+							No hay permisos establecidos para este rol.
+						</td>
+					</tr>
+				}
+				else
+				{
+					@foreach (var permiso in PermisosCompletos)
+					{
+						<tr>
+							<td>@permiso.MenusName</td>
+							@foreach (var permisoNombre in PermissionNames)
+							{
+								<td class="text-center">
+									<input type="checkbox"
+									checked="@GetValorPermiso(permiso, permisoNombre)"
+									@onchange="(e) => SetPermissionStatus(permiso.MenuId, permisoNombre, ((bool?)e.Value) ?? false)" />
+								</td>
+							}
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+	@if (PermisosCompletos.Count() > 0)
+	{
+		<div class="text-end mt-3">
+			<div class="fixed-save-button">
+				<button class="btn btn-primary" @onclick="GuardarPermisos">
+					@if (EstaGuardado)
+					{
+						<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+						<span>Guardando...</span>
+					}
+					else
+					{
+						<span>Guardar cambios</span>
+					}
+				</button>
+			</div>
+		</div>
+	}
+}
+
+@code {
+	private bool IsLoading = true;
+	private bool EstaGuardado = false;
+	private List<Role> Roles = new();
+	private List<Menu> Menus = new();
+	private List<MenuPermission> RolePermissions = new();
+	private List<MenuPermission> PermisosCompletos = new();
+
+	private long _selectedRoleId;
+	private long SelectedRoleId
+	{
+		get => _selectedRoleId;
+		set
+		{
+			if (_selectedRoleId != value)
+			{
+				_selectedRoleId = value;
+				_ = OnRoleSelected(value);
+			}
+		}
+	}
+
+	private List<string> PermissionNames = new()
+	{
+		"Ver", "Crear", "Editar", "Borrar", "Exportar", "Imprimir", "Aprobar", "Cancelar", "Autorizar"
+	};
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			IsLoading = true;
+
+			// Obtener roles
+			var responseRoles = await RoleService.GetRolesAsync();
+			if (responseRoles != null && responseRoles.Code == 200 && responseRoles.Data != null)
+			{
+				Roles = responseRoles.Data;
+			}
+			else
+			{
+				Console.WriteLine("[OnInitializedAsync] No se pudieron obtener los roles.");
+				Roles = new List<Role>();
+			}
+
+			// Obtener menús
+			Menus = await MenuService.GetMenusAsync() ?? new List<Menu>();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"[OnInitializedAsync] Error al inicializar: {ex.Message}");
+		}
+		finally
+		{
+			IsLoading = false;
+		}
+	}
+
+
+	private async Task OnRoleSelected(long roleId)
+	{
+		SelectedRoleId = roleId;
+		await LoadRolePermissions();
+	}
+
+	private async Task LoadRolePermissions()
+	{
+		RolePermissions = await MenuPermissionService.GetByRoleIdAsync(SelectedRoleId) ?? new();
+		PermisosCompletos = RolePermissions;
+		await InvokeAsync(StateHasChanged);
+	}
+
+	private async Task GuardarPermisos()
+	{
+		if (SelectedRoleId == 0) return;
+		EstaGuardado = true;
+		try
+		{
+			var result = await MenuPermissionService.InsertOrUpdateByRoleAsync(PermisosCompletos, SelectedRoleId);
+			if (result?.Code == 200 && result?.Data != null)
+			{
+				RolePermissions = result.Data.ToList();
+				await  LoadRolePermissions();
+				await SweetAlertService.FireAsync("Éxito", "Permisos guardados correctamente.", "success");
+
+			}
+			else
+			{
+				await SweetAlertService.FireAsync("Error", "No fue posible guardar permisos.", "error");
+			}
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"[GuardarPermisos] Error: {ex.Message}");
+			await SweetAlertService.FireAsync("Error", "No fue posible guardar permisos.", "error");
+		}
+		finally
+		{
+			EstaGuardado = false;
+		}
+	}
+
+	private bool GetValorPermiso(MenuPermission permiso, string permisoNombre) => permisoNombre switch
+	{
+		"Ver" => permiso.CanView,
+		"Crear" => permiso.CanCreate,
+		"Editar" => permiso.CanEdit,
+		"Borrar" => permiso.CanDelete,
+		"Exportar" => permiso.CanExport,
+		"Imprimir" => permiso.CanPrint,
+		"Aprobar" => permiso.CanApprove,
+		"Cancelar" => permiso.CanCancel,
+		"Autorizar" => permiso.CanAuthorize,
+		_ => false
+	};
+
+	private void SetPermissionStatus(int menuId, string permissionName, bool value)
+	{
+		var permiso = PermisosCompletos.FirstOrDefault(p => p.MenuId == menuId);
+		if (permiso == null) return;
+
+		switch (permissionName)
+		{
+			case "Ver": permiso.CanView = value; break;
+			case "Crear": permiso.CanCreate = value; break;
+			case "Editar": permiso.CanEdit = value; break;
+			case "Borrar": permiso.CanDelete = value; break;
+			case "Exportar": permiso.CanExport = value; break;
+			case "Imprimir": permiso.CanPrint = value; break;
+			case "Aprobar": permiso.CanApprove = value; break;
+			case "Cancelar": permiso.CanCancel = value; break;
+			case "Autorizar": permiso.CanAuthorize = value; break;
+		}
+	}
+}

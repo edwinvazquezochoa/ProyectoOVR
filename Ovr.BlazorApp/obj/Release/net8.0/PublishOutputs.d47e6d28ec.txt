@@ -1,0 +1,3 @@
+C:\Deploy\OVRFrontend\appsettings.json
+C:\Deploy\OVRFrontend\emcc-props.json
+C:\Deploy\OVRFrontend\web.config

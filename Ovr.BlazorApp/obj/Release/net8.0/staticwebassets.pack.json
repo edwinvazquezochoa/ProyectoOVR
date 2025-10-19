@@ -1,0 +1,285 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\bin\\Release\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\obj\\Release\\net8.0\\compressed\\ky4k3l1gv6.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\obj\\Release\\net8.0\\scopedcss\\bundle\\Ovr.BlazorApp.styles.css",
+      "PackagePath": "staticwebassets\\Ovr.BlazorApp.styles.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\obj\\Release\\net8.0\\service-worker-assets.js",
+      "PackagePath": "staticwebassets\\service-worker-assets.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\obj\\Release\\net8.0\\service-worker\\service-worker.published.js",
+      "PackagePath": "staticwebassets\\service-worker.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\Images\\favicon-16x16.png",
+      "PackagePath": "staticwebassets\\Images\\favicon-16x16.png"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\Images\\favicon-256x256.png",
+      "PackagePath": "staticwebassets\\Images\\favicon-256x256.png"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\Images\\favicon-32x32.png",
+      "PackagePath": "staticwebassets\\Images\\favicon-32x32.png"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\Images\\favicon-96x96.png",
+      "PackagePath": "staticwebassets\\Images\\favicon-96x96.png"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\Images\\favicon.ico",
+      "PackagePath": "staticwebassets\\Images\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\Images\\ovrlogo.jpg",
+      "PackagePath": "staticwebassets\\Images\\ovrlogo.jpg"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\appsettings.json",
+      "PackagePath": "staticwebassets\\appsettings.json"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\env.js",
+      "PackagePath": "staticwebassets\\env.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\icon-512.png",
+      "PackagePath": "staticwebassets\\icon-512.png"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\js\\ovr.js",
+      "PackagePath": "staticwebassets\\js\\ovr.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\manifest.webmanifest",
+      "PackagePath": "staticwebassets\\manifest.webmanifest"
+    },
+    {
+      "Id": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.BlazorApp\\wwwroot\\site.js",
+      "PackagePath": "staticwebassets\\site.js"
+    },
+    {
+      "Id": "C:\\Users\\edwin\\.nuget\\packages\\chartjs.blazor.fork\\2.0.2\\contentFiles\\any\\netstandard2.1\\wwwroot\\ChartJsBlazorInterop.js",
+      "PackagePath": "staticwebassets\\ChartJsBlazorInterop.js"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.Ovr.BlazorApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.build.Ovr.BlazorApp.props",
+      "PackagePath": "build\\Ovr.BlazorApp.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Ovr.BlazorApp.props",
+      "PackagePath": "buildMultiTargeting\\Ovr.BlazorApp.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildTransitive.Ovr.BlazorApp.props",
+      "PackagePath": "buildTransitive\\Ovr.BlazorApp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

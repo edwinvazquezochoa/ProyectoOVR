@@ -1,0 +1,108 @@
+Registro ID: 58b6bcb3-b926-4a6b-88d8-ae17ddfbea01
+Fecha y Hora: 2025-10-16 04:23:48
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 9bd4141e-be0b-4b22-b08c-43afda573de1
+Fecha y Hora: 2025-10-16 04:23:56
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 4f8c58b8-9c23-4426-8e50-d22919ed11ea
+Fecha y Hora: 2025-10-16 04:23:57
+Contexto: SalesNoteController.GetById
+Mensaje: Nota de venta con ID 11 obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 59b6efa2-8c15-41da-a47e-d5a0e0d1ce63
+Fecha y Hora: 2025-10-16 04:25:04
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 2aabdb22-0125-40cc-8198-adf7b2754f49
+Fecha y Hora: 2025-10-16 04:25:13
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 24804390-ad6a-4863-8ac6-c79c122ab513
+Fecha y Hora: 2025-10-16 04:25:13
+Contexto: SalesNoteController.GetById
+Mensaje: Nota de venta con ID 11 obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 960b4a91-161b-4c19-a934-26d328a37f16
+Fecha y Hora: 2025-10-16 04:26:09
+Contexto: FrameController.GetAll
+Mensaje: Lista de frames obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: f76a25be-17bd-4f81-8dca-4e3be38213d6
+Fecha y Hora: 2025-10-16 04:26:16
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 686991a4-0d02-4ac1-8ac9-d1e38fbc6a17
+Fecha y Hora: 2025-10-16 04:26:21
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 223cb72e-773d-4ae2-89fd-c38b36734e79
+Fecha y Hora: 2025-10-16 04:27:52
+Contexto: RoleController.GetAll
+Mensaje: Lista de roles obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 6e74cd86-5127-4a9d-834d-3e4078516342
+Fecha y Hora: 2025-10-16 04:27:54
+Contexto: BranchController.GetAll
+Mensaje: Lista de Branchs obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: a2c8811f-5b88-48b0-8cd5-c5d238e32557
+Fecha y Hora: 2025-10-16 04:28:04
+Contexto: BranchController.GetAll
+Mensaje: Lista de Branchs obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: af304061-241a-40b2-8688-8f6c2b0f781f
+Fecha y Hora: 2025-10-16 04:28:07
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: f5e78198-e8a3-4b46-8951-22069ef7b037
+Fecha y Hora: 2025-10-16 04:28:07
+Contexto: RoleController.GetAll
+Mensaje: Lista de roles obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 40f617ef-12bc-46c6-8aa4-a395d3954a8c
+Fecha y Hora: 2025-10-16 04:28:07
+Contexto: BranchController.GetAll
+Mensaje: Lista de Branchs obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: aa207c45-50f3-4414-baea-eda79dea5a2f
+Fecha y Hora: 2025-10-16 04:28:48
+Contexto: FrameController.GetAll
+Mensaje: Lista de frames obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 6d9dcad0-374a-4ecf-8822-81cc7099c003
+Fecha y Hora: 2025-10-16 04:28:52
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: f06f809f-cd81-4a32-9b91-35bd218c6f36
+Fecha y Hora: 2025-10-16 04:29:39
+Contexto: FrameController.GetAll
+Mensaje: Lista de frames obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------

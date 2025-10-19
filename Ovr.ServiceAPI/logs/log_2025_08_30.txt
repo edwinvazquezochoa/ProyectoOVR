@@ -1,0 +1,18 @@
+Registro ID: e1b5bfd3-b2b5-4677-b553-3ef17ac89b4a
+Fecha y Hora: 2025-08-30 21:45:42
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: e5b9d92d-792b-402b-a1e3-82e3104d0923
+Fecha y Hora: 2025-08-30 21:46:02
+Contexto: FrameController.GetAll
+Mensaje: Lista de frames obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 3c8e6de5-e6b4-4e61-9d28-a7ff35f348d7
+Fecha y Hora: 2025-08-30 21:46:14
+Contexto: FrameController.GetAll
+Mensaje: Lista de frames obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------

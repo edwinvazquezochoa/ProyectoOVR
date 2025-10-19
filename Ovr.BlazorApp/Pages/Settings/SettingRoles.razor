@@ -1,0 +1,312 @@
+﻿@page "/Settings/SettingRoles"
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@using Ovr.Domain.Responses
+@inject SweetAlertService SweetAlertService
+@inject IRoleService RoleService
+@inject IJSRuntime _jsService
+
+<div class="card shadow-sm mt-3">
+    <div class="card-header bg-body text-bg-info">
+        <h3 class="card-title mb-0">Gestión de Roles</h3>
+    </div>
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-primary" @onclick="ShowAddModal">
+                <i class="bi bi-plus-circle me-1"></i> Agregar Rol
+            </button>
+
+            <button class="btn btn-success" @onclick="DownloadExcel">
+                <i class="bi bi-file-earmark-excel me-1" disabled="@isDowloading"></i>
+                @if (isDowloading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span>Descargando...</span>
+                }
+                else
+                {
+                    <span>Exportar</span>
+                }
+            </button>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Buscar rol..." @bind="searchTerm" @bind:event="oninput" />
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" @onclick="() => SortByColumn(nameof(Role.RoleId))">ID ⬆⬇</th>
+                        <th class="text-center" @onclick="() => SortByColumn(nameof(Role.RoleName))">Nombre del Rol ⬆⬇</th>
+                        <th class="text-center">Activo</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!PagedRoles.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">No hay roles disponibles.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var role in PagedRoles)
+                        {
+                            <tr>
+                                <td class="text-center">@role.RoleId</td>
+                                <td>@role.RoleName</td>
+                                <td class="text-center">
+                                    <input type="checkbox" checked="@role.IsActive" disabled />
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-warning btn-sm" @onclick="() => ShowEditModal(role)">
+                                        <i class="bi bi-pencil me-1"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <button class="page-link" @onclick="PreviousPage">Anterior</button>
+                </li>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    var pageNumber = i; // ✅ Captura del valor correcto
+                    <li class="page-item @(currentPage == pageNumber ? "active" : "")">
+                        <button class="page-link" @onclick="() => GoToPage(pageNumber)">@pageNumber</button>
+                    </li>
+                }
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <button class="page-link" @onclick="NextPage">Siguiente</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@if (IsModalOpen)
+{
+    <div class="modal fade show" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@ModalTitle</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="RoleName" class="form-label">Nombre del Rol</label>
+                        <input type="text" id="RoleName" class="form-control" @bind="SelectedRole.RoleName" />
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="IsActive" @bind="SelectedRole.IsActive">
+                        <label class="form-check-label" for="IsActive">Activo</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveRole">Guardar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    </div>
+}
+
+@code {
+    private List<Role> Roles = new();
+    private List<Role> RolesFiltradosOrdenados = new();
+
+    private string sortColumn = nameof(Role.RoleId);
+    private bool ascending = true;
+
+    private int currentPage = 1;
+    private int pageSize = 5;
+    private int totalPages => (int)Math.Ceiling((double)RolesFiltradosOrdenados.Count / pageSize);
+
+    private List<Role> PagedRoles => RolesFiltradosOrdenados
+        .Skip((currentPage - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+
+    private Role SelectedRole = new();
+    private bool IsModalOpen = false;
+    private string ModalTitle = "Agregar Rol";
+    private bool isDowloading = false;
+
+    private string _searchTerm = "";
+    private string searchTerm
+    {
+        get => _searchTerm;
+        set
+        {
+            _searchTerm = value;
+            AplicarFiltroYOrden();
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRoles();
+    }
+
+    private async Task LoadRoles()
+    {
+        var response = await RoleService.GetRolesAsync();
+        Roles = response?.Code == 200 && response.Data != null ? response.Data : new();
+        AplicarFiltroYOrden();
+    }
+
+    private void AplicarFiltroYOrden()
+    {
+        var query = Roles
+            .Where(r => string.IsNullOrEmpty(searchTerm) || r.RoleName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+        var prop = typeof(Role).GetProperty(sortColumn);
+        if (prop != null)
+        {
+            query = ascending
+                ? query.OrderBy(r => prop.GetValue(r)?.ToString())
+                : query.OrderByDescending(r => prop.GetValue(r)?.ToString());
+        }
+
+        RolesFiltradosOrdenados = query.ToList();
+
+        if (currentPage > totalPages)
+            currentPage = totalPages == 0 ? 1 : totalPages;
+    }
+
+    private void SortByColumn(string columnName)
+    {
+        if (sortColumn == columnName)
+            ascending = !ascending;
+        else
+        {
+            sortColumn = columnName;
+            ascending = true;
+        }
+
+        AplicarFiltroYOrden();
+        StateHasChanged();
+    }
+
+    private void PreviousPage()
+    {
+        currentPage = Math.Max(1, currentPage - 1);
+        AplicarFiltroYOrden(); // 🔁 Agregado
+        StateHasChanged();
+    }
+
+    private void NextPage()
+    {
+        currentPage = Math.Min(totalPages, currentPage + 1);
+        AplicarFiltroYOrden(); // 🔁 Agregado
+        StateHasChanged();
+    }
+
+    private void GoToPage(int page)
+    {
+        if (page != currentPage)
+            currentPage = page;
+
+        AplicarFiltroYOrden(); // 🔁 Ejecutar siempre
+        StateHasChanged();     // 🔄 Forzar redibujo visual
+    }
+
+    private void ShowAddModal()
+    {
+        SelectedRole = new Role();
+        ModalTitle = "Agregar Rol";
+        IsModalOpen = true;
+    }
+
+    private void ShowEditModal(Role role)
+    {
+        SelectedRole = new Role
+            {
+                RoleId = role.RoleId,
+                RoleName = role.RoleName,
+                IsActive = role.IsActive
+            };
+        ModalTitle = "Editar Rol";
+        IsModalOpen = true;
+    }
+
+    private void CloseModal() => IsModalOpen = false;
+
+    private async Task SaveRole()
+    {
+        var response = SelectedRole.RoleId == 0
+            ? await RoleService.CreateRoleAsync(SelectedRole)
+            : await RoleService.UpdateRoleAsync(SelectedRole.RoleId, SelectedRole);
+
+        if (response.Code == 200)
+        {
+            await LoadRoles();
+            CloseModal();
+        }
+        else if (response.Code == 409)
+        {
+            await SweetAlertService.FireAsync("Atención", $"El rol '{SelectedRole.RoleName}' ya existe.", SweetAlertIcon.Warning);
+        }
+        else
+        {
+            await SweetAlertService.FireAsync("Error", response.Message, SweetAlertIcon.Error);
+        }
+    }
+
+    private async Task DownloadExcel()
+    {
+        isDowloading = true;
+        try
+        {
+            using var workbook = new ClosedXML.Excel.XLWorkbook();
+            var sheet = workbook.Worksheets.Add("Roles");
+            int startRow = 2, startCol = 2;
+
+            sheet.Cell(startRow, startCol).Value = "Reporte de Roles";
+            sheet.Range(startRow, startCol, startRow, startCol + 2).Merge().Style
+                .Font.SetBold().Font.SetFontSize(14)
+                .Alignment.SetHorizontal(ClosedXML.Excel.XLAlignmentHorizontalValues.Center)
+                .Fill.SetBackgroundColor(ClosedXML.Excel.XLColor.LightGray);
+
+            sheet.Cell(startRow + 1, startCol).Value = "Id";
+            sheet.Cell(startRow + 1, startCol + 1).Value = "Nombre del rol";
+            sheet.Cell(startRow + 1, startCol + 2).Value = "Activo";
+
+            for (int i = 0; i < Roles.Count; i++)
+            {
+                sheet.Cell(startRow + 2 + i, startCol).Value = Roles[i].RoleId;
+                sheet.Cell(startRow + 2 + i, startCol + 1).Value = Roles[i].RoleName;
+                sheet.Cell(startRow + 2 + i, startCol + 2).Value = Roles[i].IsActive ? "SI" : "NO";
+            }
+
+            sheet.Columns().AdjustToContents();
+
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            var nombreExcel = $"Reporte_Roles_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+            await _jsService.InvokeVoidAsync("window.DescargarExcel", nombreExcel, Convert.ToBase64String(stream.ToArray()));
+        }
+        catch (Exception ex)
+        {
+            await SweetAlertService.FireAsync("Error", ex.Message, SweetAlertIcon.Error);
+        }
+        finally
+        {
+            isDowloading = false;
+        }
+    }
+}

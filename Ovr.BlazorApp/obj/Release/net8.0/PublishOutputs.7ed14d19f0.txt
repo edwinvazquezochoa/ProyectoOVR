@@ -1,0 +1,3 @@
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\Ovr.BlazorApp\obj\Release\net8.0\browser-wasm\PubTmp\Out\appsettings.json
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\Ovr.BlazorApp\obj\Release\net8.0\browser-wasm\PubTmp\Out\emcc-props.json
+C:\Sedicos\Proyects\OvrProyect\Code\OvrSolution\Ovr.BlazorApp\obj\Release\net8.0\browser-wasm\PubTmp\Out\web.config

@@ -1,0 +1,6 @@
+@Ovr.ServiceAPI_HostAddress = http://localhost:5002
+
+GET {{Ovr.ServiceAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

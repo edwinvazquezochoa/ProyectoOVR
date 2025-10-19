@@ -1,0 +1,73 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Ovr.BlazorApp.Extensions
+@inherits LayoutComponentBase
+@inject AuthenticationStateProvider autenticacionProvider
+@inject NavigationManager navManager
+
+<div class="page d-flex flex-column" style="height: 100vh;">
+    <!-- Barra de navegación superior -->
+    <div class="top-row navbar navbar-dark px-1 d-flex align-items-center justify-content-between"
+         style="background-color: #0A1A3C; height: 58px;"
+         >
+
+        <!-- Marca -->
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand text-white" href="/Home">Ópticas Vista Real</a>
+        </div>
+
+        <!-- Botón para toggle del sidebar -->
+        <button class="btn btn-outline-light me-auto ms-3" @onclick="ToggleSidebar">
+            <span>@(isSidebarVisible ? "☰" : "»")</span>
+        </button>
+
+        <!-- Sección derecha: Usuario y opciones -->
+        <div class="ms-auto d-flex align-items-center">
+            @if (UserSession.GetSession != null)
+            {
+                <span class="text-white me-3">👤 @UserSession.GetSession.ShortName</span>
+            }
+            <a href="#" class="me-3 text-white">About</a>
+            <a @onclick="CerrarSesion" href="javascript:void(0)" class="text-white">Salir</a>
+        </div>
+    </div>
+
+    <!-- Contenedor principal: Sidebar + Contenido -->
+    <div class="d-flex flex-grow-1">
+
+        <!-- Sidebar (solo visible si hay sesión) -->
+        <div class="sidebar"
+             style="background-color: #0A1A3C; width: @(ShouldShowSidebar ? "250px" : "0px"); overflow: hidden; transition: width 0.3s;">
+            @if (ShouldShowSidebar)
+            {
+                <NavMenu />
+            }
+        </div>
+
+        <!-- Contenido de página -->
+        <main class="flex-grow-1">
+            <article>
+                @Body
+            </article>
+        </main>
+    </div>
+</div>
+
+@code {
+    private bool isSidebarVisible = true;
+
+    private bool ShouldShowSidebar =>
+        isSidebarVisible && UserSession.GetSession != null;
+
+    private void ToggleSidebar()
+    {
+        isSidebarVisible = !isSidebarVisible;
+    }
+
+    private async Task CerrarSesion()
+    {
+        var autenticacionExt = (AutenticacionExtension)autenticacionProvider;
+        await autenticacionExt.ActualizarEstadoAutenticacion(null);
+        UserSession.SetSession = null;
+        navManager.NavigateTo("/", forceLoad: true);
+    }
+}

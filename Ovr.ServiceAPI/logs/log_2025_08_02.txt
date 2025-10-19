@@ -1,0 +1,12 @@
+Registro ID: d5088f3a-510b-4746-95ba-853f134ac8cc
+Fecha y Hora: 2025-08-02 20:54:01
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: bbd2cb4b-323b-47cb-9933-5a5aa0a686a8
+Fecha y Hora: 2025-08-02 21:00:48
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,108 @@
+﻿@page "/Home"
+@using Microsoft.AspNetCore.Authorization
+@using Blazored.SessionStorage
+@using Ovr.Domain.Models
+@using Ovr.BlazorApp.Extensions
+@inject ISessionStorageService SessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService SessionStorage
+@attribute [Authorize]
+
+<div class="bg-Default min-vh-100 d-flex flex-column">
+
+    <main class="container my-1">
+        <div class="row g-2">
+
+            <!-- Encabezado -->
+            <div class="col-md-12 text-center">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4>¡Bienvenido a OVR!</h4>
+                        <p class="lead">Gestión óptica simplificada y eficiente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Usuario y Sucursal -->
+            <div class="col-md-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        @if (UserSession.GetSession != null)
+                        {
+                            <p><strong>Usuario:</strong> @UserSession.GetSession.ShortName</p>
+                            <p><strong>Sucursal:</strong> @UserSession.GetSession.BrancheName</p>
+                        }
+                        else
+                        {
+                            <p class="text-danger">Usuario no autenticado o sesión no disponible.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulos disponibles -->
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Historial de Ventas</h5>
+                        <p class="card-text">Consulta y analiza las ventas realizadas en tu óptica.</p>
+                        <button class="btn btn-primary w-100">
+                            Ir al historial de Ventas
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Inventarios</h5>
+                        <p class="card-text">Mantén un control eficiente de tus productos ópticos.</p>
+                        <button class="btn btn-primary w-100">
+                            Ir a Inventarios
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Reportes y Estadísticas</h5>
+                        <p class="card-text">Genera reportes detallados para tomar mejores decisiones.</p>
+                        <button class="btn btn-primary w-100">
+                            Ver Reportes
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0">© 2025 OVR - Todos los derechos reservados.</p>
+    </footer>
+
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserSession.GetSession == null)
+        {
+            var userInfo = await SessionStorage.GetItemAsync<UserInfo>("sesionUsuario");
+            if (userInfo is not null)
+            {
+                UserSession.SetSession = userInfo;
+                StateHasChanged(); // Refresca la vista para mostrar los datos
+            }
+        }
+    }
+
+
+    private async Task VerificarToken()
+    {
+        var token = await SessionStorage.GetItemAsync<string>("authToken");
+        Console.WriteLine($"TOKEN GUARDADO: {token}");
+    }
+}

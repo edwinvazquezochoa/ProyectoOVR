@@ -1,0 +1,138 @@
+﻿@page "/Sales/Sale"
+@using System.Globalization
+@using Ovr.Client.Services.Interfaces
+@using Ovr.Domain.DTOs
+@using Ovr.Domain.Responses
+@inject NavigationManager NavigationManager
+@inject ISaleNoteListService SaleNoteListService
+
+<h3 class="mb-1 mt-2">Notas de venta</h3>
+
+<div class="d-flex justify-content-between align-items-center mb-0">
+    <div class="d-flex gap-2">
+        <!-- Input de búsqueda → se actualiza en tiempo real -->
+        <input class="form-control" placeholder="Buscar cliente o folio"
+               @bind-value="busqueda"
+               @bind-value:event="oninput" />
+
+        <!-- Select de estatus → se actualiza con set -->
+        <select class="form-select" @bind="filtroEstatus">
+            <option value="">Todos</option>
+            <option value="1">Solicitado</option>
+            <option value="2">Pendiente</option>
+            <option value="3">Entregado</option>
+        </select>
+
+        <!-- Botón limpiar filtros -->
+        <button class="btn btn-secondary" @onclick="LimpiarFiltros">Limpiar filtro</button>
+    </div>
+
+    <!-- Botón registrar venta -->
+    <button class="btn btn-primary" @onclick="RegistrarVenta">
+        <i class="bi bi-plus-circle me-1"></i> Registrar venta
+    </button>
+</div>
+
+
+
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Folio</th>
+            <th>Cliente</th>
+            <th>Fecha venta</th>
+            <th>Fecha compromiso</th>
+            <th>Total</th>
+            <th>Estatus</th>
+            <th>Último pago</th>
+            <th>Sucursal</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (SaleNotesPaged.Items != null && SaleNotesPaged.Items.Any())
+        {
+            @foreach (var nota in SaleNotesPaged.Items)
+            {
+                <tr>
+                    <td>@nota.OrderNumber</td>
+                    <td>@nota.ClienteNombre</td>
+                    <td>@nota.SaleDate.ToString("dd-MM-yyyy")</td>
+                    <td>@nota.CommitmentDate?.ToString("dd-MM-yyyy")</td>
+                    <td>@nota.Total.ToString("C", CultureInfo.CreateSpecificCulture("es-MX"))</td>
+                    <td>
+                        <span class="badge bg-@GetEstatusColor(nota.StatusId)">@GetEstatusName(nota.StatusId)</span>
+                    </td>
+                    <td>@nota.UltimoPagoDate?.ToString("dd-MM-yyyy")</td>
+                    <td>@nota.BranchName</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-primary" title="Ver detalle" @onclick="() => VerDetalle(nota.SaleNoteId)">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" class="text-center">No se encontraron notas de venta.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private string busqueda = "";
+    private string filtroEstatus = "";
+    private int page = 1;
+    private int rows = 10;
+
+    private PagedResult<SaleNoteListDto> SaleNotesPaged = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await BuscarNotas();
+    }
+
+    private async Task BuscarNotas()
+    {
+        int? statusId = int.TryParse(filtroEstatus, out var parsedStatus) ? parsedStatus : (int?)null;
+
+        SaleNotesPaged = await SaleNoteListService.GetAllSaleNotesAsync(busqueda, statusId, null, null, page, rows);
+    }
+
+
+    void RegistrarVenta()
+    {
+        NavigationManager.NavigateTo("/Sales/SaleDetails/0");
+    }
+
+    void VerDetalle(long id)
+    {
+        NavigationManager.NavigateTo($"/Sales/SaleDetails/{id}");
+    }
+
+    async void LimpiarFiltros()
+    {
+        busqueda = "";
+        filtroEstatus = "";
+        await BuscarNotas();
+    }
+
+    string GetEstatusColor(int statusId) => statusId switch
+    {
+        1 => "warning",
+        2 => "secondary",
+        3 => "success",
+        _ => "light"
+    };
+
+    string GetEstatusName(int statusId) => statusId switch
+    {
+        1 => "Solicitado",
+        2 => "Pendiente",
+        3 => "Entregado",
+        _ => "Desconocido"
+    };
+}

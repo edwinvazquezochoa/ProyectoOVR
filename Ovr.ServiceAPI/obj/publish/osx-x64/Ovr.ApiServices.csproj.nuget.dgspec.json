@@ -1,0 +1,462 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServiceAPI\\Ovr.ApiServices.csproj": {}
+  },
+  "projects": {
+    "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\Ovr.Core.Infrastructures.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\Ovr.Core.Infrastructures.csproj",
+        "projectName": "Ovr.Core.Infrastructures",
+        "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\Ovr.Core.Infrastructures.csproj",
+        "packagesPath": "C:\\Users\\Consiss\\.nuget\\packages\\",
+        "outputPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Consiss\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj": {
+                "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.104.2, )"
+            },
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "osx-x64": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.DAO\\Ovr.DAO.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.DAO\\Ovr.DAO.csproj",
+        "projectName": "Ovr.DAO",
+        "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.DAO\\Ovr.DAO.csproj",
+        "packagesPath": "C:\\Users\\Consiss\\.nuget\\packages\\",
+        "outputPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.DAO\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Consiss\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\Ovr.Core.Infrastructures.csproj": {
+                "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\Ovr.Core.Infrastructures.csproj"
+              },
+              "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj": {
+                "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.2.2, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "osx-x64": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj",
+        "projectName": "Ovr.Domain",
+        "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj",
+        "packagesPath": "C:\\Users\\Consiss\\.nuget\\packages\\",
+        "outputPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Consiss\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "osx-x64": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServiceAPI\\Ovr.ApiServices.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServiceAPI\\Ovr.ApiServices.csproj",
+        "projectName": "Ovr.ApiServices",
+        "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServiceAPI\\Ovr.ApiServices.csproj",
+        "packagesPath": "C:\\Users\\Consiss\\.nuget\\packages\\",
+        "outputPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServiceAPI\\obj\\publish\\osx-x64\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Consiss\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\Ovr.Core.Infrastructures.csproj": {
+                "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\Ovr.Core.Infrastructures.csproj"
+              },
+              "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj": {
+                "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj"
+              },
+              "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServicesApp\\Ovr.DaoServices.csproj": {
+                "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServicesApp\\Ovr.DaoServices.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.18, )"
+            },
+            "Microsoft.AspNetCore.DataProtection": {
+              "target": "Package",
+              "version": "[8.0.18, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.18, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-x64",
+              "version": "[8.0.18, 8.0.18]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "osx-x64": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServicesApp\\Ovr.DaoServices.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServicesApp\\Ovr.DaoServices.csproj",
+        "projectName": "Ovr.DaoServices",
+        "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServicesApp\\Ovr.DaoServices.csproj",
+        "packagesPath": "C:\\Users\\Consiss\\.nuget\\packages\\",
+        "outputPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.ServicesApp\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Consiss\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\Ovr.Core.Infrastructures.csproj": {
+                "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Core.Infrastructures\\Ovr.Core.Infrastructures.csproj"
+              },
+              "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.DAO\\Ovr.DAO.csproj": {
+                "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.DAO\\Ovr.DAO.csproj"
+              },
+              "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj": {
+                "projectPath": "C:\\Sedicos\\Clientes\\OVR\\Code\\OvrSolution\\Ovr.Domain\\Ovr.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "osx-x64": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

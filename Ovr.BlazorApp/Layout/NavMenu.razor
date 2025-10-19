@@ -1,0 +1,157 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components
+@using Blazored.SessionStorage
+@using Ovr.BlazorApp.Services.Implementations
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+
+@inject IMenuService MenuService
+@inject ISessionStorageService SessionStorage
+@inject NavigationManager NavigationManager
+
+<div class="nav-scrollable p-2">
+    <nav class="nav flex-column">
+        @if (Menus?.Any() == true)
+        {
+            @foreach (var menu in Menus)
+            {
+                @RenderMenu(menu)
+            }
+        }
+        else
+        {
+            <span class="text-white ps-3">No hay menús disponibles.</span>
+        }
+    </nav>
+</div>
+
+@code {
+    private List<Menu> Menus = new();
+    private HashSet<int> ExpandedMenus = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var userInfo = await SessionStorage.GetItemAsync<UserInfo>("sesionUsuario");
+            if (userInfo != null)
+            {
+                Menus = await MenuService.GetMenusByUserIdAsync(userInfo.UserId);
+
+                // Detectar rutas activas para expandir menú correspondiente
+                foreach (var menu in Menus)
+                {
+                    DetectExpandedMenus(menu);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error al cargar menús: {ex.Message}");
+        }
+    }
+
+    private void ToggleSubMenu(int menuId)
+    {
+        if (ExpandedMenus.Contains(menuId))
+            ExpandedMenus.Remove(menuId);
+        else
+            ExpandedMenus.Add(menuId);
+    }
+
+    private bool IsSubMenuVisible(int menuId) => ExpandedMenus.Contains(menuId);
+
+    private bool HasActiveSubMenu(Menu menu)
+    {
+        if (menu.SubMenus == null) return false;
+
+        var currentUri = NavigationManager.Uri.ToLower();
+        return menu.SubMenus.Any(sub =>
+            (!string.IsNullOrEmpty(sub.Controller) && currentUri.Contains($"/{sub.Controller.ToLower()}")) ||
+            HasActiveSubMenu(sub)
+        );
+    }
+
+    private void DetectExpandedMenus(Menu menu)
+    {
+        if (menu.SubMenus == null || !menu.SubMenus.Any())
+            return;
+
+        if (HasActiveSubMenu(menu))
+        {
+            ExpandedMenus.Add(menu.MenuId);
+        }
+
+        foreach (var sub in menu.SubMenus)
+        {
+            DetectExpandedMenus(sub);
+        }
+    }
+
+    private RenderFragment RenderMenu(Menu menu) => builder =>
+    {
+        int seq = 0;
+        builder.OpenElement(seq++, "div");
+        builder.AddAttribute(seq++, "class", "nav-item px-2");
+
+        if (menu.SubMenus != null && menu.SubMenus.Any())
+        {
+            var isActiveParent = HasActiveSubMenu(menu);
+
+            builder.OpenElement(seq++, "button");
+            builder.AddAttribute(seq++, "class", $"nav-link text-start w-100 {(isActiveParent ? "active" : "")}");
+            builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, () => ToggleSubMenu(menu.MenuId)));
+
+            builder.OpenElement(seq++, "div");
+            builder.AddAttribute(seq++, "class", "d-flex justify-content-between align-items-center");
+
+            builder.OpenElement(seq++, "span");
+            builder.AddContent(seq++, menu.MenuName);
+            builder.CloseElement();
+
+            builder.OpenElement(seq++, "i");
+            builder.AddAttribute(seq++, "class", $"bi bi-chevron-right menu-chevron {(IsSubMenuVisible(menu.MenuId) ? "rotate" : "")}");
+            builder.CloseElement(); // i
+
+            builder.CloseElement(); // div
+            builder.CloseElement(); // button
+
+            if (IsSubMenuVisible(menu.MenuId))
+            {
+                builder.OpenElement(seq++, "nav");
+                builder.AddAttribute(seq++, "class", "nav flex-column ps-3");
+
+                foreach (var sub in menu.SubMenus)
+                {
+                    builder.AddContent(seq++, RenderMenu(sub));
+                }
+
+                builder.CloseElement(); // nav
+            }
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(menu.Controller) && !string.IsNullOrEmpty(menu.Action))
+            {
+                builder.OpenComponent<NavLink>(seq++);
+                builder.AddAttribute(seq++, "class", "nav-link");
+                builder.AddAttribute(seq++, "href", $"/{menu.Controller}");
+                builder.AddAttribute(seq++, "Match", NavLinkMatch.All);
+                builder.AddAttribute(seq++, "ChildContent", (RenderFragment)(childBuilder =>
+                {
+                    childBuilder.AddContent(seq++, menu.MenuName);
+                }));
+                builder.CloseComponent();
+            }
+            else
+            {
+                builder.OpenElement(seq++, "span");
+                builder.AddAttribute(seq++, "class", "nav-link disabled");
+                builder.AddContent(seq++, menu.MenuName);
+                builder.CloseElement();
+            }
+        }
+
+        builder.CloseElement(); // div.nav-item
+    };
+}

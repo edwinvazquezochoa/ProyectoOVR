@@ -1,0 +1,318 @@
+﻿@page "/Catalogs/Lenses"
+
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Ovr.BlazorApp.Extensions
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@using Ovr.Domain.Responses
+@inject SweetAlertService SweetAlertService
+@inject ILensesServices LensesService
+@inject IJSRuntime JSRuntime
+@using ClosedXML.Excel
+
+<div class="card shadow-sm mt-3">
+    <div class="card-header bg-body text-bg-info">
+        <h3 class="card-title mb-0">Gestión de Lentes</h3>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-primary" @onclick="ShowAddModal">
+                <i class="bi bi-plus-circle me-1"></i> Agregar Lente
+            </button>
+            <button class="btn btn-success" @onclick="DownloadExcel">
+                <i class="bi bi-file-earmark-excel me-1" disabled="@isDownloading"></i>
+                @if (isDownloading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span>Descargando...</span>
+                }
+                else
+                {
+                    <span>Exportar</span>
+                }
+            </button>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Buscar lente..." @bind="searchTerm" @bind:event="oninput" />
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" @onclick="() => SortByColumn(nameof(Len.LensId))">ID ⬆⬇</th>
+                        <th class="text-center" @onclick="() => SortByColumn(nameof(Len.LensName))">Nombre del lente ⬆⬇</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!PagedLenses.Any())
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center">No hay lentes disponibles.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var lens in PagedLenses)
+                        {
+                            <tr>
+                                <td class="text-center">@lens.LensId</td>
+                                <td>@lens.LensName</td>
+                                <td class="text-center">
+                                    <button class="btn btn-warning btn-sm me-2" @onclick="() => ShowEditModal(lens)">
+                                        <i class="bi bi-pencil me-1"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <button class="page-link" @onclick="PreviousPage">Anterior</button>
+                </li>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    var pageNumber = i;
+                    <li class="page-item @(currentPage == pageNumber ? "active" : "")">
+                        <button class="page-link" @onclick="() => GoToPage(pageNumber)">@pageNumber</button>
+                    </li>
+                }
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <button class="page-link" @onclick="NextPage">Siguiente</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@if (IsModalOpen)
+{
+    <div class="modal fade show" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <EditForm Model="SelectedLens" OnValidSubmit="SaveLens">
+                    <DataAnnotationsValidator />
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">@ModalTitle</h5>
+                        <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <ValidationSummary />
+
+                        <div class="mb-3">
+                            <label for="LensName" class="form-label">Nombre del lente</label>
+                            <InputText id="LensName" class="form-control" @bind-Value="SelectedLens.LensName" />
+                            <ValidationMessage For="@(() => SelectedLens.LensName)" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    </div>
+}
+
+
+
+@code {
+    private List<Len> lenses = new();
+    private List<Len> lensesFiltradosOrdenados = new();
+
+    private string _searchTerm = "";
+    private string searchTerm
+    {
+        get => _searchTerm;
+        set
+        {
+            _searchTerm = value;
+            AplicarFiltroYOrden();
+            StateHasChanged();
+        }
+    }
+
+    private string sortColumn = nameof(Len.LensId);
+    private bool ascending = true;
+
+    private int currentPage = 1;
+    private int pageSize = 5;
+    private int totalPages => (int)Math.Ceiling((double)lensesFiltradosOrdenados.Count / pageSize);
+    private List<Len> PagedLenses => lensesFiltradosOrdenados
+        .Skip((currentPage - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+
+    private Len SelectedLens = new();
+    private bool IsModalOpen = false;
+    private string ModalTitle = "Agregar lente";
+    private bool isDownloading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadLenses();
+    }
+
+    private async Task LoadLenses()
+    {
+        var response = await LensesService.GetLensesAsync();
+        lenses = response?.Code == 200 && response.Data != null ? response.Data : new();
+        AplicarFiltroYOrden();
+    }
+
+    private void AplicarFiltroYOrden()
+    {
+        var query = lenses
+            .Where(f => string.IsNullOrEmpty(searchTerm) || f.LensName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+        if (sortColumn == nameof(Len.LensId))
+        {
+            query = ascending ? query.OrderBy(f => f.LensId) : query.OrderByDescending(f => f.LensId);
+        }
+        else
+        {
+            var prop = typeof(Len).GetProperty(sortColumn);
+            if (prop != null)
+            {
+                query = ascending
+                    ? query.OrderBy(f => prop.GetValue(f)?.ToString())
+                    : query.OrderByDescending(f => prop.GetValue(f)?.ToString());
+            }
+        }
+
+        lensesFiltradosOrdenados = query.ToList();
+
+        if (currentPage > totalPages)
+            currentPage = totalPages == 0 ? 1 : totalPages;
+    }
+
+    private void SortByColumn(string columnName)
+    {
+        if (sortColumn == columnName)
+            ascending = !ascending;
+        else
+        {
+            sortColumn = columnName;
+            ascending = true;
+        }
+
+        AplicarFiltroYOrden();
+        StateHasChanged();
+    }
+
+    private void PreviousPage()
+    {
+        currentPage = Math.Max(1, currentPage - 1);
+        AplicarFiltroYOrden();
+        StateHasChanged();
+    }
+
+    private void NextPage()
+    {
+        currentPage = Math.Min(totalPages, currentPage + 1);
+        AplicarFiltroYOrden();
+        StateHasChanged();
+    }
+
+    private void GoToPage(int page)
+    {
+        if (page != currentPage)
+            currentPage = page;
+
+        AplicarFiltroYOrden();
+        StateHasChanged();
+    }
+
+    private void ShowAddModal()
+    {
+        SelectedLens = new();
+        ModalTitle = "Agregar lente";
+        IsModalOpen = true;
+    }
+
+    private void ShowEditModal(Len lens)
+    {
+        SelectedLens = new Len
+            {
+                LensId = lens.LensId,
+                LensName = lens.LensName
+            };
+        ModalTitle = "Editar lente";
+        IsModalOpen = true;
+    }
+
+    private void CloseModal() => IsModalOpen = false;
+
+    private async Task SaveLens()
+    {
+        ResponseBase<Len> response;
+
+        if (SelectedLens.LensId == 0)
+            response = await LensesService.CreateLensAsync(SelectedLens);
+        else
+            response = await LensesService.UpdateLensAsync(SelectedLens.LensId, SelectedLens);
+
+        if (response.Code == 200 || response.Code == 201)
+        {
+            await LoadLenses();
+            CloseModal();
+        }
+        else if (response.Code == 409)
+        {
+            await SweetAlertService.FireAsync("Atención", $"El lente '{SelectedLens.LensName}' ya existe.", SweetAlertIcon.Warning);
+        }
+        else if (response.Code == 400)
+        {
+            await SweetAlertService.FireAsync("Atención", response.Message, SweetAlertIcon.Warning);
+        }
+        else
+        {
+            await SweetAlertService.FireAsync("Error", response.Message, SweetAlertIcon.Error);
+        }
+    }
+
+    private async Task DownloadExcel()
+    {
+        isDownloading = true;
+        try
+        {
+            using var workbook = new XLWorkbook();
+            var sheet = workbook.Worksheets.Add("Lentes");
+
+            sheet.Cell(1, 1).Value = "ID";
+            sheet.Cell(1, 2).Value = "Nombre del lente";
+
+            for (int i = 0; i < lenses.Count; i++)
+            {
+                sheet.Cell(i + 2, 1).Value = lenses[i].LensId;
+                sheet.Cell(i + 2, 2).Value = lenses[i].LensName;
+            }
+
+            sheet.Columns().AdjustToContents();
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            var nombreExcel = $"Reporte_Lentes_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+            await JSRuntime.InvokeVoidAsync("window.DescargarExcel", nombreExcel, Convert.ToBase64String(stream.ToArray()));
+        }
+        catch (Exception ex)
+        {
+            await SweetAlertService.FireAsync("Error", ex.Message, SweetAlertIcon.Error);
+        }
+        finally
+        {
+            isDownloading = false;
+        }
+    }
+}

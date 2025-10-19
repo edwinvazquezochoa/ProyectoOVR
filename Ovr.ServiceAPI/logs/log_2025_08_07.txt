@@ -1,0 +1,78 @@
+Registro ID: 018005cf-5782-4986-825b-8e2d44ab358c
+Fecha y Hora: 2025-08-07 20:59:20
+Contexto: AuthController.ForgotPassword 
+Mensaje: La nueva contraseña temporal ha sido enviada.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 6009421f-8a5f-4f6b-be29-adbae29c8690
+Fecha y Hora: 2025-08-07 21:37:52
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: a8cff31a-e670-45d7-81df-2cd7b3f199f2
+Fecha y Hora: 2025-08-07 21:43:30
+Contexto: AuthController.ForgotPassword 
+Mensaje: La nueva contraseña temporal ha sido enviada.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: ef12a86b-16e0-4b69-a791-69077ebff375
+Fecha y Hora: 2025-08-07 21:43:44
+Contexto: AuthController.ForgotPassword 
+Mensaje: La nueva contraseña temporal ha sido enviada.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: e970a47b-08cd-4c8a-87fd-e1e2b7413f94
+Fecha y Hora: 2025-08-07 21:44:32
+Contexto: AuthController.ForgotPassword 
+Mensaje: La nueva contraseña temporal ha sido enviada.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: f1073471-752a-447c-abd7-8da9692ba6b7
+Fecha y Hora: 2025-08-07 21:44:57
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 66a218cf-d44b-4ad9-a63b-18ed8e96fc06
+Fecha y Hora: 2025-08-07 21:47:53
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 43dfe180-de49-4a64-a07f-ddcae6d801c7
+Fecha y Hora: 2025-08-07 22:08:56
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 56063b30-65ab-4670-a91f-fb1ec2cf58c7
+Fecha y Hora: 2025-08-07 22:15:21
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: f86b6684-e14a-4632-ad73-a8d384c98a21
+Fecha y Hora: 2025-08-07 22:16:40
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: fafa0b35-8194-49d9-99f4-12cbb2600c16
+Fecha y Hora: 2025-08-07 22:16:43
+Contexto: PersonController.GetAll
+Mensaje: Lista de personas obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 4f9dce8d-e1da-47ef-a28f-f181849883de
+Fecha y Hora: 2025-08-07 22:16:44
+Contexto: SalesNoteController.GetById
+Mensaje: Nota de venta con ID 11 obtenida correctamente.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: a7e1dbea-dd84-4bed-8af2-b178c09337b4
+Fecha y Hora: 2025-08-07 22:16:46
+Contexto: SalesNoteController.Update
+Mensaje: Nota de venta con ID 11 actualizada correctamente.
+
+------------------------------------------------------------------------------------------------------------------------

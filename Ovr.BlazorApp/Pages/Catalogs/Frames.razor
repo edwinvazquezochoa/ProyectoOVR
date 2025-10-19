@@ -1,0 +1,321 @@
+﻿@page "/Catalogs/Frames"
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Ovr.BlazorApp.Extensions
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@using Ovr.Domain.Responses
+@inject SweetAlertService SweetAlertService
+@inject IFrameClientService FrameService
+@inject IJSRuntime JSRuntime
+@using ClosedXML.Excel
+
+<div class="card shadow-sm mt-3">
+    <div class="card-header bg-body text-bg-info">
+        <h3 class="card-title mb-0">Gestión de armazones</h3>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-primary" @onclick="ShowAddModal">
+                <i class="bi bi-plus-circle me-1"></i> Agregar armazón
+            </button>
+            <button class="btn btn-success" @onclick="DownloadExcel">
+                <i class="bi bi-file-earmark-excel me-1" disabled="@isDownloading"></i>
+                @if (isDownloading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span>Descargando...</span>
+                }
+                else
+                {
+                    <span>Exportar</span>
+                }
+            </button>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Buscar armazón..." @bind="searchTerm" @bind:event="oninput" />
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" @onclick="() => SortByColumn(nameof(Frame.FrameId))">ID ⬆⬇</th>
+                        <th class="text-center" @onclick="() => SortByColumn(nameof(Frame.FrameName))">Nombre del armazón ⬆⬇</th>
+                        <th class="text-center">Activo</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!PagedFrames.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">No hay armazones disponibles.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var frame in PagedFrames)
+                        {
+                            <tr>
+                                <td class="text-center">@frame.FrameId</td>
+                                <td>@frame.FrameName</td>
+                                <td class="text-center">
+                                    <input type="checkbox" checked="@frame.IsActive" disabled />
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-warning btn-sm me-2" @onclick="() => ShowEditModal(frame)">
+                                        <i class="bi bi-pencil me-1"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <button class="page-link" @onclick="PreviousPage">Anterior</button>
+                </li>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    var pageNumber = i;
+                    <li class="page-item @(currentPage == pageNumber ? "active" : "")">
+                        <button class="page-link" @onclick="() => GoToPage(pageNumber)">@pageNumber</button>
+                    </li>
+                }
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <button class="page-link" @onclick="NextPage">Siguiente</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@if (IsModalOpen)
+{
+    <div class="modal fade show" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@ModalTitle</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="FrameName" class="form-label">Nombre del armazón</label>
+                        <input type="text" id="FrameName" class="form-control" @bind="SelectedFrame.FrameName" />
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="IsActive" @bind="SelectedFrame.IsActive">
+                        <label class="form-check-label" for="IsActive">Activo</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveFrame">Guardar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    </div>
+}
+
+@code {
+    private List<Frame> frames = new();
+    private List<Frame> framesFiltradosOrdenados = new();
+
+    private string _searchTerm = "";
+    private string searchTerm
+    {
+        get => _searchTerm;
+        set
+        {
+            _searchTerm = value;
+            AplicarFiltroYOrden();
+            StateHasChanged();
+        }
+    }
+
+    private string sortColumn = nameof(Frame.FrameId);
+    private bool ascending = true;
+
+    private int currentPage = 1;
+    private int pageSize = 5;
+    private int totalPages => (int)Math.Ceiling((double)framesFiltradosOrdenados.Count / pageSize);
+    private List<Frame> PagedFrames => framesFiltradosOrdenados
+        .Skip((currentPage - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+
+    private Frame SelectedFrame = new();
+    private bool IsModalOpen = false;
+    private string ModalTitle = "Agregar armazón";
+    private bool isDownloading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadFrames();
+    }
+
+    private async Task LoadFrames()
+    {
+        var response = await FrameService.GetFramesAsync();
+        frames = response?.Code == 200 && response.Data != null ? response.Data : new();
+        AplicarFiltroYOrden();
+    }
+
+    private void AplicarFiltroYOrden()
+    {
+        var query = frames
+            .Where(f => string.IsNullOrEmpty(searchTerm) || f.FrameName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+        // Ordenamiento
+        if (sortColumn == nameof(Frame.FrameId))
+        {
+            query = ascending
+                ? query.OrderBy(f => f.FrameId)
+                : query.OrderByDescending(f => f.FrameId);
+        }
+        else
+        {
+            var prop = typeof(Frame).GetProperty(sortColumn);
+            if (prop != null)
+            {
+                query = ascending
+                    ? query.OrderBy(f => prop.GetValue(f)?.ToString())
+                    : query.OrderByDescending(f => prop.GetValue(f)?.ToString());
+            }
+        }
+
+        framesFiltradosOrdenados = query.ToList();
+
+        if (currentPage > totalPages)
+            currentPage = totalPages == 0 ? 1 : totalPages;
+    }
+
+
+    private void SortByColumn(string columnName)
+    {
+        if (sortColumn == columnName)
+            ascending = !ascending;
+        else
+        {
+            sortColumn = columnName;
+            ascending = true;
+        }
+
+        AplicarFiltroYOrden();
+        StateHasChanged();
+    }
+
+    private void PreviousPage()
+    {
+        currentPage = Math.Max(1, currentPage - 1);
+        AplicarFiltroYOrden();
+        StateHasChanged();
+    }
+
+    private void NextPage()
+    {
+        currentPage = Math.Min(totalPages, currentPage + 1);
+        AplicarFiltroYOrden();
+        StateHasChanged();
+    }
+
+    private void GoToPage(int page)
+    {
+        if (page != currentPage)
+            currentPage = page;
+
+        AplicarFiltroYOrden();
+        StateHasChanged();
+    }
+
+    private void ShowAddModal()
+    {
+        SelectedFrame = new Frame();
+        ModalTitle = "Agregar armazón";
+        IsModalOpen = true;
+    }
+
+    private void ShowEditModal(Frame frame)
+    {
+        SelectedFrame = new Frame
+            {
+                FrameId = frame.FrameId,
+                FrameName = frame.FrameName,
+                IsActive = frame.IsActive
+            };
+        ModalTitle = "Editar Frame";
+        IsModalOpen = true;
+    }
+
+    private void CloseModal() => IsModalOpen = false;
+
+    private async Task SaveFrame()
+    {
+        ResponseBase<Frame> response;
+
+        if (SelectedFrame.FrameId == 0)
+            response = await FrameService.CreateFrameAsync(SelectedFrame);
+        else
+            response = await FrameService.UpdateFrameAsync(SelectedFrame.FrameId, SelectedFrame);
+
+        if (response.Code == 200 || response.Code == 201)
+        {
+            await LoadFrames();
+            CloseModal();
+        }
+        else if (response.Code == 409)
+        {
+            await SweetAlertService.FireAsync("Atención", $"El armazón '{SelectedFrame.FrameName}' ya existe.", SweetAlertIcon.Warning);
+        }
+        else if (response.Code == 400)
+        {
+            await SweetAlertService.FireAsync("Atención", response.Message, SweetAlertIcon.Warning);
+        }
+        else
+        {
+            await SweetAlertService.FireAsync("Error", response.Message, SweetAlertIcon.Error);
+        }
+    }
+
+    private async Task DownloadExcel()
+    {
+        isDownloading = true;
+        try
+        {
+            using var workbook = new XLWorkbook();
+            var sheet = workbook.Worksheets.Add("Armazónes");
+
+            sheet.Cell(1, 1).Value = "ID";
+            sheet.Cell(1, 2).Value = "Nombre del armazón";
+            sheet.Cell(1, 3).Value = "Activo";
+
+            for (int i = 0; i < frames.Count; i++)
+            {
+                sheet.Cell(i + 2, 1).Value = frames[i].FrameId;
+                sheet.Cell(i + 2, 2).Value = frames[i].FrameName;
+                sheet.Cell(i + 2, 3).Value = frames[i].IsActive ? "SI" : "NO";
+            }
+
+            sheet.Columns().AdjustToContents();
+            using var memoryStream = new MemoryStream();
+            workbook.SaveAs(memoryStream);
+            var fileName = $"Reporte_Frames_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+            await JSRuntime.InvokeVoidAsync("window.DescargarExcel", fileName, Convert.ToBase64String(memoryStream.ToArray()));
+        }
+        catch (Exception ex)
+        {
+            await SweetAlertService.FireAsync("Error", ex.Message, SweetAlertIcon.Error);
+        }
+        finally
+        {
+            isDownloading = false;
+        }
+    }
+}

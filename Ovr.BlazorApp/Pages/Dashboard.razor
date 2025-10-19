@@ -1,0 +1,24 @@
+﻿@page "/Dashboard"
+@inject IDashBoardService _dashboardServicio;
+@using ChartJs.Blazor
+@using ChartJs.Blazor.BarChart.Axes;
+@using ChartJs.Blazor.Common;
+@using ChartJs.Blazor.Common.Axes;
+@using ChartJs.Blazor.Common.Axes.Ticks;
+@using ChartJs.Blazor.BarChart;
+@using ChartJs.Blazor.Util;
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Responses
+
+<div class="container mt-5">
+    <h3>DashBoard</h3>
+
+</div>
+
+@code {
+    DashBoardDTO dashboard = new DashBoardDTO();
+
+    private BarConfig barconfig;
+    private Chart _chart = null!;
+
+}

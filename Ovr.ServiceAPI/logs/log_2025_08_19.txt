@@ -1,0 +1,195 @@
+Registro ID: c6bbf5f7-52a6-4490-a463-2a05f69aad86
+Fecha y Hora: 2025-08-19 21:54:12
+Contexto: UserService.EmailExists
+Mensaje de Error: Error al verificar la existencia del email en la base de datos.
+Información sobre la excepción interna:
+Mensaje Interno: Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Interfaces de red SQL, error: 26 - Error al buscar el servidor/instancia especificado)
+Traza del Error:
+   at Ovr.DAO.UserDao.EmailUserExists(String email, Nullable`1 userId) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\UserDAO.cs:line 231
+   at Ovr.DaoServices.Services.UserService.EmailExists(String email, Nullable`1 userId) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServicesApp\Implementations\UserService.cs:line 175
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 94d2fc9c-89bb-4a38-a2bc-1a4c6a976f03
+Fecha y Hora: 2025-08-19 21:54:13
+Contexto: AuthController.ForgotPassword 
+Mensaje de Error: Error al verificar la existencia del email en la base de datos.
+Información sobre la excepción interna:
+Mensaje Interno: Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Interfaces de red SQL, error: 26 - Error al buscar el servidor/instancia especificado)
+Traza del Error:
+   at Ovr.DAO.UserDao.EmailUserExists(String email, Nullable`1 userId) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\UserDAO.cs:line 231
+   at Ovr.DaoServices.Services.UserService.EmailExists(String email, Nullable`1 userId) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServicesApp\Implementations\UserService.cs:line 175
+   at Ovr.ApiServices.Controllers.AuthController.forgotpassword(String email) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServiceAPI\Controllers\AuthController.cs:line 98
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 8c59b848-0c5f-40e9-b5d8-cc53bc8856fe
+Fecha y Hora: 2025-08-19 21:54:39
+Contexto: UserService.EmailExists
+Mensaje de Error: Error al verificar la existencia del email en la base de datos.
+Información sobre la excepción interna:
+Mensaje Interno: Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Interfaces de red SQL, error: 26 - Error al buscar el servidor/instancia especificado)
+Traza del Error:
+   at Ovr.DAO.UserDao.EmailUserExists(String email, Nullable`1 userId) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\UserDAO.cs:line 231
+   at Ovr.DaoServices.Services.UserService.EmailExists(String email, Nullable`1 userId) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServicesApp\Implementations\UserService.cs:line 175
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: c78461ff-3d20-4bd5-9f36-51ed8759a716
+Fecha y Hora: 2025-08-19 21:54:40
+Contexto: AuthController.ForgotPassword 
+Mensaje de Error: Error al verificar la existencia del email en la base de datos.
+Información sobre la excepción interna:
+Mensaje Interno: Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Interfaces de red SQL, error: 26 - Error al buscar el servidor/instancia especificado)
+Traza del Error:
+   at Ovr.DAO.UserDao.EmailUserExists(String email, Nullable`1 userId) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\UserDAO.cs:line 231
+   at Ovr.DaoServices.Services.UserService.EmailExists(String email, Nullable`1 userId) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServicesApp\Implementations\UserService.cs:line 175
+   at Ovr.ApiServices.Controllers.AuthController.forgotpassword(String email) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServiceAPI\Controllers\AuthController.cs:line 98
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 8a3fc94c-6576-49f8-b1db-a307d1e25590
+Fecha y Hora: 2025-08-19 22:01:26
+Contexto: AuthController.Login
+Mensaje de Error: Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Interfaces de red SQL, error: 26 - Error al buscar el servidor/instancia especificado)
+Traza del Error:
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, DbConnectionPool pool, Func`3 accessTokenCallback)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Ovr.DAO.AuthDAO.VerifyUserCredentialsAsync(String email, String password) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\AuthDAO.cs:line 27
+   at Ovr.ApiServices.Controllers.AuthController.Login(LoginRequest request) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServiceAPI\Controllers\AuthController.cs:line 56
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 471a5d58-ff8a-41d8-a4e8-519f72e25ff1
+Fecha y Hora: 2025-08-19 22:03:58
+Contexto: AuthController.Login
+Mensaje de Error: Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Interfaces de red SQL, error: 26 - Error al buscar el servidor/instancia especificado)
+Traza del Error:
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, DbConnectionPool pool, Func`3 accessTokenCallback)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Ovr.DAO.AuthDAO.VerifyUserCredentialsAsync(String email, String password) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\AuthDAO.cs:line 27
+   at Ovr.ApiServices.Controllers.AuthController.Login(LoginRequest request) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServiceAPI\Controllers\AuthController.cs:line 56
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 21c39f75-9f06-4411-8a9a-b3d494ff66c8
+Fecha y Hora: 2025-08-19 22:05:51
+Contexto: AuthController.Login
+Mensaje de Error: Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Interfaces de red SQL, error: 26 - Error al buscar el servidor/instancia especificado)
+Traza del Error:
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, DbConnectionPool pool, Func`3 accessTokenCallback)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Ovr.DAO.AuthDAO.VerifyUserCredentialsAsync(String email, String password) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\AuthDAO.cs:line 27
+   at Ovr.ApiServices.Controllers.AuthController.Login(LoginRequest request) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServiceAPI\Controllers\AuthController.cs:line 56
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 8eb84836-228a-4ddf-b5aa-f625540e8c11
+Fecha y Hora: 2025-08-19 22:09:19
+Contexto: AuthController.Login
+Mensaje de Error: Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Interfaces de red SQL, error: 26 - Error al buscar el servidor/instancia especificado)
+Traza del Error:
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, DbConnectionPool pool, Func`3 accessTokenCallback)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Ovr.DAO.AuthDAO.VerifyUserCredentialsAsync(String email, String password) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\AuthDAO.cs:line 27
+   at Ovr.ApiServices.Controllers.AuthController.Login(LoginRequest request) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServiceAPI\Controllers\AuthController.cs:line 56
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: 9b84cbce-ffbb-4b85-85d4-67a43f43508a
+Fecha y Hora: 2025-08-19 22:16:06
+Contexto: AuthController.Login
+Mensaje de Error: Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Interfaces de red SQL, error: 26 - Error al buscar el servidor/instancia especificado)
+Traza del Error:
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, DbConnectionPool pool, Func`3 accessTokenCallback)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Ovr.DAO.AuthDAO.VerifyUserCredentialsAsync(String email, String password) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\AuthDAO.cs:line 27
+   at Ovr.ApiServices.Controllers.AuthController.Login(LoginRequest request) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServiceAPI\Controllers\AuthController.cs:line 56
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: e1d014d6-55b2-49da-a10e-1230c9213cc8
+Fecha y Hora: 2025-08-19 22:20:36
+Contexto: AuthController.Login
+Mensaje de Error: Error de inicio de sesión del usuario 'sa'.
+Traza del Error:
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.CompleteLogin(Boolean enlistOK)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, DbConnectionPool pool, Func`3 accessTokenCallback)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Ovr.DAO.AuthDAO.VerifyUserCredentialsAsync(String email, String password) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.DAO\AuthDAO.cs:line 27
+   at Ovr.ApiServices.Controllers.AuthController.Login(LoginRequest request) in C:\Sedicos\Clientes\OVR\Code\OvrSolution\Ovr.ServiceAPI\Controllers\AuthController.cs:line 56
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: bd5c5c65-bd98-4ba4-9701-976b86b92e06
+Fecha y Hora: 2025-08-19 22:33:39
+Contexto: AuthController.ForgotPassword 
+Mensaje: La nueva contraseña temporal ha sido enviada.
+
+------------------------------------------------------------------------------------------------------------------------
+Registro ID: c1d67d72-211a-4447-827e-cc683672cb98
+Fecha y Hora: 2025-08-19 22:34:31
+Contexto: MenuController.GetMenusPermissionsByUserId
+Mensaje: Menús del usuario ID 1 obtenidos correctamente.
+
+------------------------------------------------------------------------------------------------------------------------

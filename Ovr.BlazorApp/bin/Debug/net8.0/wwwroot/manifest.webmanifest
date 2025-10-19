@@ -1,0 +1,32 @@
+{
+  "name": "Ópticas Vista Real",
+  "short_name": "OVR",
+  "id": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1b002f",
+  "theme_color": "#1b002f",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "Images/favicon-256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "Images/favicon-96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "Images/favicon-32x32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "Images/favicon-16x16.png",
+      "type": "image/png",
+      "sizes": "16x16"
+    }
+  ]
+}

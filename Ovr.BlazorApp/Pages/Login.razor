@@ -1,0 +1,202 @@
+﻿@page "/"
+@layout LoginLayout
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using Ovr.BlazorApp.Extensions
+@using Ovr.BlazorApp.Services.Implementations
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@using Ovr.Domain.Requests
+@using Microsoft.AspNetCore.Components.Forms
+
+@inject SweetAlertService SweetAlertService
+@inject IAuthService AuthService
+@inject AuthenticationStateProvider autenticacionProvider
+@inject NavigationManager NavigationManager
+@inject JwtTokenUtils jwtTokenUtils
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IMenuService MenuService
+
+<div class="d-flex flex-column align-items-center justify-content-center">
+    <div class="card shadow p-4 rounded-3" style="width: 100%; max-width: 400px;">
+        <div class="text-center mb-3">
+            <img src="images/ovrlogo.jpg" class="img-fluid" style="max-width: 250px;" alt="Ópticas Vista Real" />
+        </div>
+
+        <h5 class="text-center mb-3">Iniciar sesión</h5>
+
+        <EditForm Model="LoginModel" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label class="form-label">Usuario</label>
+
+                <input class="form-control"
+                       @bind="LoginModel.Email" autofocus />
+
+
+                <ValidationMessage For="@(() => LoginModel.Email)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <InputText class="form-control" @bind-Value="LoginModel.Password" type="password" maxlength="8" />
+                <ValidationMessage For="@(() => LoginModel.Password)" />
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit" disabled="@isLoading">
+                @if (isLoading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="ms-2">Validando...</span>
+                }
+                else
+                {
+                    <span>Iniciar sesión</span>
+                }
+            </button>
+
+            <div class="text-center mt-3">
+                <button class="btn btn-link text-decoration-underline text-dark"
+                        type="button"
+                        disabled="@isSendingReset"
+                        @onclick="HandleForgotPassword">
+                    @if (isSendingReset)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="ms-2">Enviando...</span>
+                    }
+                    else
+                    {
+                        <span>¿Olvidaste tu contraseña?</span>
+                    }
+                </button>
+            </div>
+
+        </EditForm>
+    </div>
+
+    <footer class="text-center mt-4 text-white" style="font-size: 0.85rem;">
+        © 2025 OVR - Versión 1.0.0
+    </footer>
+
+</div>
+
+@code {
+    private LoginRequest LoginModel = new();
+    private bool isLoading = false;
+    private ElementReference usuarioInput;
+    private bool isSendingReset = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await usuarioInput.FocusAsync();
+    }
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+
+        try
+        {
+            // 🔄 Asegúrate de limpiar el token anterior antes de continuar
+            await sessionStorage.RemoveItemAsync("authToken");
+
+            var response = await AuthService.LoginAsync(LoginModel.Email, LoginModel.Password);
+
+            if (response?.Code == 200)
+            {
+                // 🆕 Guardar el nuevo token
+                await sessionStorage.SetItemAsync("authToken", response.Data);
+
+                // 🧠 Decodificar y guardar la sesión del usuario
+                var userInfo = jwtTokenUtils.DecodeJwtToken(response.Data);
+                UserSession.SetSession = userInfo;
+
+                var authExt = (AutenticacionExtension)autenticacionProvider;
+                await authExt.ActualizarEstadoAutenticacion(userInfo);
+
+                // ✅ Forzar recarga de la app para que el nuevo token sea tomado por TokenAuthorizationHandler
+                NavigationManager.NavigateTo("/home", forceLoad: true);
+            }
+            else if (response?.Code == 401)
+            {
+                await SweetAlertService.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Inicio de sessión",
+                    Text = response.Message,
+                    Icon = SweetAlertIcon.Warning
+                });
+            }
+            else if (response?.Code == 404)
+            {
+                await SweetAlertService.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Falló la conexión",
+                    Text = response.Message,
+                    Icon = SweetAlertIcon.Warning
+                });
+            }
+            else
+            {
+                await SweetAlertService.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Acceso denegado",
+                    Text = response?.Message ?? "Credenciales inválidas.",
+                    Icon = SweetAlertIcon.Error
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Login error: {ex.Message}");
+            await SweetAlertService.FireAsync("Error", "Ocurrió un error inesperado. Inténtalo más tarde.", SweetAlertIcon.Error);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+
+
+    private async Task HandleForgotPassword()
+    {
+        if (string.IsNullOrWhiteSpace(LoginModel.Email))
+        {
+            await SweetAlertService.FireAsync("Advertencia", "Por favor, ingresa tu correo electrónico.", SweetAlertIcon.Warning);
+            return;
+        }
+
+        isSendingReset = true;
+
+        try
+        {
+            var response = await AuthService.ResetPasswordAsync(LoginModel.Email);
+
+            if (response.Code == 200)
+            {
+                await SweetAlertService.FireAsync("Éxito", response.Message, SweetAlertIcon.Success);
+            }
+            else
+            {
+                await SweetAlertService.FireAsync("Advertencia", response.Message, SweetAlertIcon.Warning);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"ForgotPassword error: {ex.Message}");
+            await SweetAlertService.FireAsync("Error", "Ocurrió un error inesperado.", SweetAlertIcon.Error);
+        }
+        finally
+        {
+            isSendingReset = false;
+        }
+    }
+
+
+
+
+}

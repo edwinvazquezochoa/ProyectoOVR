@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "Ovr.ServiceAPI\\Ovr.ApiServices.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Ovr.BlazorApp\\Ovr.BlazorApp.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "wZCvgLbjaCgqHyTWFWt3fDIBvKV0i7QH6zrwwhn9oAQ=",
+  "Source": "Ovr.ApiServices",
+  "BasePath": "_content/Ovr.ApiServices",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mappings\**" />
+    <EmbeddedResource Remove="Mappings\**" />
+    <None Remove="Mappings\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Implementations\PosLogService.cs" />
+    <Compile Remove="Interfaces\IPosLogService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ovr.Core.Infrastructures\Ovr.Core.Infrastructures.csproj" />
+    <ProjectReference Include="..\Ovr.DAO\Ovr.DAO.csproj" />
+    <ProjectReference Include="..\Ovr.Domain\Ovr.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,96 @@
+﻿@typeparam TItem
+@typeparam TItemKey
+
+<div class="position-relative">
+    <!-- Botón visible -->
+    <button type="button"
+            class="form-select text-start"
+            @onclick="ToggleDropdown">
+        @GetSelectedText()
+    </button>
+
+    @if (IsDropdownOpen)
+    {
+        <div class="dropdown-menu show p-2 w-100" style="max-height: 250px; overflow-y: auto;">
+            <input type="text"
+                   class="form-control mb-2"
+                   placeholder="Buscar..."
+                   @bind="SearchText"
+                   @bind:event="oninput" />
+
+            @if (FilteredItems.Any())
+            {
+                @foreach (var item in FilteredItems)
+                {
+                    <button type="button"
+                            class="dropdown-item"
+                            @onclick="@(() => OnItemSelected(item))">
+                        @ItemTextSelector(item)
+                    </button>
+                }
+            }
+            else
+            {
+                <div class="dropdown-item disabled">Sin resultados</div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public List<TItem> Items { get; set; } = new();
+    [Parameter] public Func<TItem, string> ItemTextSelector { get; set; } = default!;
+    [Parameter] public Func<TItem, TItemKey> ItemValueSelector { get; set; } = default!;
+
+    private TItemKey _selectedValue = default!;
+
+    [Parameter]
+    public TItemKey SelectedValue
+    {
+        get => _selectedValue;
+        set
+        {
+            if (!EqualityComparer<TItemKey>.Default.Equals(_selectedValue, value))
+            {
+                _selectedValue = value;
+                SelectedValueChanged.InvokeAsync(_selectedValue);
+            }
+        }
+    }
+
+    [Parameter] public EventCallback<TItemKey> SelectedValueChanged { get; set; }
+
+    [Parameter] public string DefaultOptionText { get; set; } = "Seleccione...";
+
+    private bool IsDropdownOpen = false;
+    private string SearchText { get; set; } = string.Empty;
+
+    private IEnumerable<TItem> FilteredItems =>
+        string.IsNullOrWhiteSpace(SearchText)
+            ? Items ?? new List<TItem>()
+            : Items?.Where(item => ItemTextSelector(item)
+                ?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) == true) ?? new List<TItem>();
+
+    private void ToggleDropdown()
+    {
+        IsDropdownOpen = !IsDropdownOpen;
+    }
+
+    private void OnItemSelected(TItem item)
+    {
+        SelectedValue = ItemValueSelector(item);
+        IsDropdownOpen = false;
+        SearchText = string.Empty;
+    }
+
+    private string GetSelectedText()
+    {
+        if (EqualityComparer<TItemKey>.Default.Equals(SelectedValue, default!))
+            return DefaultOptionText;
+
+        var selectedItem = Items.FirstOrDefault(i =>
+            EqualityComparer<TItemKey>.Default.Equals(ItemValueSelector(i), SelectedValue));
+
+        return selectedItem != null ? ItemTextSelector(selectedItem) : DefaultOptionText;
+    }
+}

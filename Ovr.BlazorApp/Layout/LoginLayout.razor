@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+
+<div class="position-relative min-vh-100 w-100 overflow-hidden" style="margin:0;padding:0;">
+    <!-- Fondo superior -->
+    <div class="position-absolute top-0 start-0 w-100 h-50 bg-light"></div>
+
+    <!-- Fondo inferior -->
+    <div class="position-absolute bottom-0 start-0 w-100 h-50 bg-purple-gradient"></div>
+
+    <!-- Contenido -->
+    <div class="position-absolute top-50 start-50 translate-middle w-100" style="max-width: 400px; z-index: 10;">
+        @Body
+    </div>
+</div>
+
+
+@code {
+
+}

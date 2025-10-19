@@ -1,0 +1,432 @@
+﻿@page "/Catalogs/People"
+
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Ovr.BlazorApp.Extensions
+@using Ovr.BlazorApp.Services.Intefaces
+@using Ovr.Domain.Models
+@using Ovr.Domain.Responses
+@inject SweetAlertService SweetAlertService
+@inject IPersonsServices PersonService
+@inject IJSRuntime JSRuntime
+@using ClosedXML.Excel
+
+<div class="card shadow-sm mt-3">
+    <div class="card-header bg-body text-bg-info">
+        <h3 class="card-title mb-0">Gestión de Personas</h3>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-primary" @onclick="ShowAddModal">
+                <i class="bi bi-plus-circle me-1"></i> Agregar Persona
+            </button>
+            <button class="btn btn-success" @onclick="DownloadExcel">
+                <i class="bi bi-file-earmark-excel me-1" disabled="@isDownloading"></i>
+                @if (isDownloading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span>Descargando...</span>
+                }
+                else
+                {
+                    <span>Exportar</span>
+                }
+            </button>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Buscar persona..." @bind="searchTerm" @bind:event="oninput" />
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" @onclick="() => SortByColumn(nameof(Person.PersonId))">ID ⬆⬇</th>
+                        <th class="text-center" @onclick="() => SortByColumn(nameof(Person.FullName))">Nombre completo ⬆⬇</th>
+                        <th class="text-center">Correo</th>
+                        <th class="text-center">Teléfono</th>
+                        <th class="text-center">Activo</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!PagedPeople.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">No hay personas registradas.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var person in PagedPeople)
+                        {
+                            <tr>
+                                <td class="text-center">@person.PersonId</td>
+                                <td>@person.FullName</td>
+                                <td class="text-center">@person.Email</td>
+                                <td class="text-center">@person.PhoneNumber</td>
+                                <td class="text-center">
+                                    <input type="checkbox" checked="@person.IsActive" disabled />
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-warning btn-sm me-2" @onclick="() => ShowEditModal(person)">
+                                        <i class="bi bi-pencil me-1"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <button class="page-link" @onclick="PreviousPage">Anterior</button>
+                </li>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    var pageNumber = i;
+                    <li class="page-item @(currentPage == pageNumber ? "active" : "")">
+                        <button class="page-link" @onclick="() => GoToPage(pageNumber)">@pageNumber</button>
+                    </li>
+                }
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <button class="page-link" @onclick="NextPage">Siguiente</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@if (IsModalOpen)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <EditForm Model="SelectedPerson" OnValidSubmit="SavePerson">
+                    <DataAnnotationsValidator />
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">@ModalTitle</h5>
+                        <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <ValidationSummary />
+
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.FirstName" />
+                                <ValidationMessage For="@(() => SelectedPerson.FirstName)" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Apellido paterno</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.LastName" />
+                                <ValidationMessage For="@(() => SelectedPerson.LastName)" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Apellido materno</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.MiddleName" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Género</label>
+                                <InputSelect class="form-select" @bind-Value="SelectedPerson.GenderId">
+                                    <option disabled value="0">Seleccione</option>
+                                    <option value="1">Masculino</option>
+                                    <option value="2">Femenino</option>
+                                </InputSelect>
+                                <ValidationMessage For="@(() => SelectedPerson.GenderId)" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de nacimiento</label>
+                                <InputDate class="form-control" @bind-Value="SelectedPerson.BirthDate" />
+                                <ValidationMessage For="@(() => SelectedPerson.BirthDate)" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Correo electrónico</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.Email" />
+                                <ValidationMessage For="@(() => SelectedPerson.Email)" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.PhoneNumber" />
+                                <ValidationMessage For="@(() => SelectedPerson.PhoneNumber)" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Calle y número</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.AddressStreetNumber" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Colonia</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.AddressNeighborhood" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Ciudad</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.AddressCity" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Estado</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.AddressState" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Código Postal</label>
+                                <InputText class="form-control" @bind-Value="SelectedPerson.AddressPostalCode" />
+                            </div>
+
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check">
+                                    <InputCheckbox class="form-check-input" @bind-Value="SelectedPerson.IsActive" />
+                                    <label class="form-check-label">Activo</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    private List<Person> people = new();
+    private List<Person> filteredPeople = new();
+
+    private string _searchTerm = string.Empty;
+    private string searchTerm
+    {
+        get => _searchTerm;
+        set
+        {
+            _searchTerm = value;
+            ApplyFilterAndSort();
+            StateHasChanged();
+        }
+    }
+
+    private string sortColumn = nameof(Person.PersonId);
+    private bool ascending = true;
+
+    private int currentPage = 1;
+    private int pageSize = 5;
+    private int totalPages => (int)Math.Ceiling((double)filteredPeople.Count / pageSize);
+    private List<Person> PagedPeople => filteredPeople
+        .Skip((currentPage - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+
+    private bool IsModalOpen = false;
+    private Person SelectedPerson = new();
+    private string ModalTitle = "Agregar Persona";
+    private bool isDownloading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPeople();
+    }
+
+    private async Task LoadPeople()
+    {
+        var response = await PersonService.GetPersonsAsync();
+        people = response?.Code == 200 && response.Data != null ? response.Data : new();
+        ApplyFilterAndSort();
+    }
+
+    private async Task SavePerson()
+    {
+        ResponseBase<Person> response;
+
+        if (SelectedPerson.PersonId == 0) // Nueva persona
+        {
+            response = await PersonService.CreatePersonAsync(SelectedPerson);
+        }
+        else // Edición de persona existente
+        {
+            response = await PersonService.UpdatePersonAsync((int)SelectedPerson.PersonId, SelectedPerson);
+        }
+
+        if (response.Code == 200 || response.Code == 201)
+        {
+            await LoadPeople();
+            CloseModal();
+            await SweetAlertService.FireAsync("Éxito", response.Message, SweetAlertIcon.Success);
+        }
+        else if (response.Code == 409)
+        {
+            await SweetAlertService.FireAsync("Atención", response.Message, SweetAlertIcon.Warning);
+        }
+        else if (response.Code == 400)
+        {
+            await SweetAlertService.FireAsync("Atención", response.Message, SweetAlertIcon.Warning);
+        }
+        else
+        {
+            await SweetAlertService.FireAsync("Error", response.Message, SweetAlertIcon.Error);
+        }
+    }
+
+    private void ApplyFilterAndSort()
+    {
+        var query = people
+            .Where(p => string.IsNullOrEmpty(searchTerm) || p.FullName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+        if (sortColumn == nameof(Person.PersonId))
+        {
+            query = ascending ? query.OrderBy(p => p.PersonId) : query.OrderByDescending(p => p.PersonId);
+        }
+        else
+        {
+            var prop = typeof(Person).GetProperty(sortColumn);
+            if (prop != null)
+            {
+                query = ascending
+                    ? query.OrderBy(p => prop.GetValue(p)?.ToString())
+                    : query.OrderByDescending(p => prop.GetValue(p)?.ToString());
+            }
+        }
+
+        filteredPeople = query.ToList();
+
+        if (currentPage > totalPages)
+            currentPage = totalPages == 0 ? 1 : totalPages;
+    }
+
+    private void SortByColumn(string columnName)
+    {
+        if (sortColumn == columnName)
+            ascending = !ascending;
+        else
+        {
+            sortColumn = columnName;
+            ascending = true;
+        }
+
+        ApplyFilterAndSort();
+        StateHasChanged();
+    }
+
+    private void PreviousPage()
+    {
+        currentPage = Math.Max(1, currentPage - 1);
+        ApplyFilterAndSort();
+        StateHasChanged();
+    }
+
+    private void NextPage()
+    {
+        currentPage = Math.Min(totalPages, currentPage + 1);
+        ApplyFilterAndSort();
+        StateHasChanged();
+    }
+
+    private void GoToPage(int page)
+    {
+        if (page != currentPage)
+            currentPage = page;
+
+        ApplyFilterAndSort();
+        StateHasChanged();
+    }
+
+    private void ShowAddModal()
+    {
+        SelectedPerson = new Person();
+        ModalTitle = "Agregar Persona";
+        IsModalOpen = true;
+    }
+
+    private void ShowEditModal(Person person)
+    {
+        SelectedPerson = new Person
+        {
+            PersonId = person.PersonId,
+            FirstName = person.FirstName,
+            LastName = person.LastName,
+            MiddleName = person.MiddleName,
+            GenderId = person.GenderId,
+            BirthDate = person.BirthDate,
+            Email = person.Email,
+            PhoneNumber = person.PhoneNumber,
+            IsActive = person.IsActive,
+            AddressStreetNumber = person.AddressStreetNumber,
+            AddressNeighborhood = person.AddressNeighborhood,
+            AddressCity = person.AddressCity,
+            AddressState = person.AddressState,
+            AddressPostalCode = person.AddressPostalCode
+        };
+
+        ModalTitle = "Editar Persona";
+        IsModalOpen = true;
+    }
+
+    private void CloseModal() => IsModalOpen = false;
+
+    private async Task DownloadExcel()
+    {
+        isDownloading = true;
+        try
+        {
+            using var workbook = new XLWorkbook();
+            var sheet = workbook.Worksheets.Add("Personas");
+
+            sheet.Cell(1, 1).Value = "ID";
+            sheet.Cell(1, 2).Value = "Nombre Completo";
+            sheet.Cell(1, 3).Value = "Email";
+            sheet.Cell(1, 4).Value = "Teléfono";
+            sheet.Cell(1, 5).Value = "Calle y número";
+            sheet.Cell(1, 6).Value = "Colonia";
+            sheet.Cell(1, 7).Value = "Ciudad";
+            sheet.Cell(1, 8).Value = "Estado";
+            sheet.Cell(1, 9).Value = "Código Postal";
+            sheet.Cell(1, 10).Value = "Activo";
+
+
+            for (int i = 0; i < people.Count; i++)
+            {
+                sheet.Cell(i + 2, 1).Value = people[i].PersonId;
+                sheet.Cell(i + 2, 2).Value = people[i].FullName;
+                sheet.Cell(i + 2, 3).Value = people[i].Email;
+                sheet.Cell(i + 2, 4).Value = people[i].PhoneNumber;
+                sheet.Cell(i + 2, 5).Value = people[i].AddressStreetNumber;
+                sheet.Cell(i + 2, 6).Value = people[i].AddressNeighborhood;
+                sheet.Cell(i + 2, 7).Value = people[i].AddressCity;
+                sheet.Cell(i + 2, 8).Value = people[i].AddressState;
+                sheet.Cell(i + 2, 9).Value = people[i].AddressPostalCode;
+                sheet.Cell(i + 2, 10).Value = people[i].IsActive ? "SI" : "NO";
+            }
+
+
+            sheet.Columns().AdjustToContents();
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            var fileName = $"Reporte_Personas_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+            await JSRuntime.InvokeVoidAsync("window.DescargarExcel", fileName, Convert.ToBase64String(stream.ToArray()));
+        }
+        catch (Exception ex)
+        {
+            await SweetAlertService.FireAsync("Error", ex.Message, SweetAlertIcon.Error);
+        }
+        finally
+        {
+            isDownloading = false;
+        }
+    }
+}
