@@ -1,6 +1,6 @@
 # Proyecto OVR
 
-
+![Proyecto OVR](ovr.png)
 
 
 ## Descripción
